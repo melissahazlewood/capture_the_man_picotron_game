@@ -1,0 +1,396 @@
+picotron cartridge // www.picotron.net
+version 2
+
+:: gfx/
+:: gfx/0.gfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
+OS0xNSAxOToyMzoxMCIscmV2aXNpb249MTZdXWx6NABVAwAA9zwAAPEoe1swXT17Ym1wPXB4dQBD
+IBAQBPBWBxAHwBfQF8AHEAfwVixmbGFncz0wLHBhbl94PS0yLjM3NQ0A_gB5PS0xLjUsem9vbT04
+fSxGAP8pEL4wvxcg3QA9F00XTRc9Jw5NF-0BFy0XjQcCLQcCjR4tHv0QB00XfTctJ20HHk13Dv0B
+HgC9HgBvACX-G78XIN4A-gI3Ljf_BxcuF44HAi4HAo4fDi4d-hYXngc_p-4RHQC_HSC9EGIAJC-w
+8DkA-0ICuAHgPhdOF04XPicPDk4X-gG-Af4LAgcuAgeOHS4d-hAHThd_Ny4nbgcdTncN-gHGAQ8o
+AioCaQAPKAL-owLjAwDFAQ8oAkwGaQAPKAL-owLjAw8oAlAGaQAPKAI4BtIA-w5_Fx4njh8OHi3_
+ByceJ24XAgcOFwIHfi0eLf4Yl48C-0sPVgIAXxAtLi1_UAJLMxYvDmQAD0oCSATHAB8oQgIwDzkA
+--------LmMSpzAXAAcCAFIXIBcQNwgAFSASACMABwIAxCcQ1xAXEAcQByAnEBYAsEcQFwAnAAcQ
+NyAHCAAiAEcIAI8gByDHIBfwDs8AJg85AP-----------------88ExgIARg9ULQEwVWEw8W9isF
+XhMWoCUPEwMfG0YPEw8VDxv2KzUeE1ZgJQYvEw8bJgUuDxUD9i4FEw0OVkAlJgUNAwYFAx4lDxP2
+LQwDDxsNHmYgJRYFHhMFDhMVFADxCRMFLnYQJQYFHgYFLg0LBQYc9i4MAwV_JhQA8DETDgUeA-Yy
+FS4FXhYAJRYFEx0TBQ4j9jAFLiUOJQ4mJQYMEw0OBQ4TDgwT9jAFHgUOBhUeBQ4mJQwTDBUGDg0D
+TwDwBy8VDhUOExUOFSYlDAMFTgUDC-YyBQ4fAKETBQ5GJQwLFR4lFADwCh4WBQ4GAwYFRiUMEzUG
+DAMM9jIlDgYVE2ZnAPAJNgwD9jUVDhYMA2YlFgwDJgwT9jYVJhNWHAD0ByYs9jsDC1YlFhz2QQNm
+JfZFDGYl9k0DACBMNQMA-xFLVfZKFQAl9kkVEDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEm
+DzkA-------------------------------------xRQbT04fX0=
+:: gfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
+OS0xOCAxNDo1ODowMCJdXQ==
+:: map/
+:: map/0.map
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
+OS0wMiAwMzo0Mzo1NCIscmV2aXNpb249NV1dbHo0AGsAAABbEAAA8Ah7e2JtcD11c2VyZGF0YSgi
+aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
+0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
+:: map/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
+OS0xOCAxNDo1ODowMCJdXQ==
+:: sfx/
+:: sfx/0.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ5Iixtb2RpZmllZD0iMjAyNS0w
+OS0wMiAwMToxODozNSIscmV2aXNpb249N11dbHo0AOUAAACeCgAA-zBweHUAAygAAAQABA9AEAIO
+AAGgASACoA4ADxAADfDKAQIDQA8PkAQFBgdADJAICQoLQAyQDwwPDQ8ODEAM8P8BAOvwB6oBEAYP
+IBABAA94AAEP8RAB8AACEAISAPMwIA8hD_kQATAPYZAPEQIgDyBQAQ-lEAHgAgggD7MgD6wQAg9Q
+8IIBcA8oD-8ADyDwxA-4Cg--D4AP9w8NAfAJWAAyIAEgUwARDlIAcCABMA9A8MM0AC3wxjEAHw4w
+AP------jR--AQCsz8gPQAAPEED--7DwcAsAZR--AQD-3FD-----Aw==
+:: sfx/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
+OS0xOCAxNDo1ODowMCJdXQ==
+:: button_actions.lua
+--[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-15 22:40:52",revision=13]]
+function handle_input(game)
+	if (btn(2)) up_action(game)
+	if (btn(3)) down_action(game)
+	if (key("space")) spacebar_action(game)
+end
+
+function up_action(game)
+	if not game.is_space_clicked then
+		game.radius += 1
+	end
+end
+
+function down_action(game)
+	if not game.is_space_clicked then
+		game.radius -= 1
+	end
+end
+
+function spacebar_action(game)
+	if not game.is_space_clicked then
+		game.is_space_clicked = true
+		game.time_elapsed = time() - game.time0
+	end
+end
+:: config.lua
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-15 20:23:36",revision=41]]
+colors = {
+	WHITE = 7,
+	RED = 8,
+	GREEN = 11
+}
+
+phases = { 
+		instructions = 0, gameplay = 1, ending = 2, scoreboard = 3 }
+		
+instructions_text = {
+		"kill him...",
+		"but don't\ntouch him"
+	}
+
+-- Set up window dimensions and window center point coordinates
+window_table = {
+	win_dim = 128,
+	win_title = "Capture the Man!"
+}
+function window_table:make_window()
+	window({
+		height = window_table.win_dim, 
+		width = window_table.win_dim,
+		title = window_table.win_title})
+end
+
+center = {
+	x = window_table.win_dim/2 - 1, -- x-value (px) of screen center
+	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
+}
+:: drawing.lua
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-15 20:11:11",revision=177]]
+function draw_objects(game) 
+	-- Draw circle
+	circ(game.center.x, game.center.y, game.radius, game.circle_color)
+	-- Draw sprite
+	sspr(1, 0, 0, 16, 16, 
+			game.sprite_corner.x, game.sprite_corner.y, game.dim, game.dim)
+end
+
+function wrap_text(text, max_w)
+	local out, line_ = {}, ""
+	for word in all(split(text, " ")) do
+		line_temp = line_..word.." "
+--		local w = print(line_temp, 0, 0); cls()
+		local w, _ = measure_w_h(line_temp)
+		if w > max_w and line ~= "" then
+			add(out, line_)
+			line_ = word.." "
+		else
+			line_ = line_temp
+		end
+	end
+	if line_ ~= "" then
+		add(out, line_)
+	end
+	return out
+end
+
+function draw_text_box(text)
+	local lines = wrap_text(text, 56)
+	if #lines == 0 then return end
+
+	local widths = {}
+	local widest = 0
+	h = 0
+	for i = 1, #lines do
+--		local line_w, line_h = print(lines[i], 0, 0)
+--		cls()
+		local line_w, line_h = measure_w_h(lines[i])
+		widths[i] = line_w
+		widest = max(w, line_w)
+		h += line_h
+	end
+		
+	tb_w = 96
+	tb_h0 = 32 -- text box height before stretching
+	tb_h1 = h + #lines + 8 -- text box height after stretching
+	
+	tb_x0 = (126-tb_w)/2
+	tb_y0 = 126-tb_h1
+	
+	sspr(128, 0, 0, tb_w, tb_h0, tb_x0, tb_y0, tb_w, tb_h1)
+	line_h = h / #lines
+	for i = 1, #lines do
+		print(lines[i], (128 - widths[i])/2, tb_y0 + line_h*(i-1) + 6, 1)
+	end
+end
+:: geometry.lua
+--[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-02 23:39:28",revision=29]]
+function get_bounding_box_coords(center, radius)
+	local x0 = center.x - radius
+	local y0 = center.y - radius
+	local x1 = center.x + radius
+	local y1 = center.y + radius
+	return x0, y0, x1, y1
+end
+
+function get_bounding_box(center, radius)
+	return {
+		x0 = center.x - radius,
+		y0 = center.y - radius,
+		x1 = center.x + radius,
+		y1 = center.y + radius,
+	}
+end
+
+function get_bb_coords_from_tl_corner(top_left_corner, dim)
+	local x0 = top_left_corner.x
+	local y0 = top_left_corner.y
+	local x1 = x0 + dim - 1
+	local y1 = y0 + dim - 1
+	return x0, y0, x1, y1
+end
+
+function get_bb_from_tl_corner(top_left_corner, dim)
+	return {
+		x0 = top_left_corner.x,
+		y0 = top_left_corner.y,
+		x1 = top_left_corner.x + dim - 1,
+		y1 = top_left_corner.y + dim - 1
+	}
+end
+
+function is_point_within_box(x, y, box)
+	return x >= box.x0 and x <= box.x1 and
+			 y >= box.y0 and y <= box.y1
+end
+
+function is_point_outside_box(x, y, box)
+	return x < box.x0 or x > box.x1 or
+			 y < box.y0 or y > box.y1
+end
+
+function is_hypotenuse_within_px_of_radius(dx, dy, radius, px)
+		dr = sqrt(dx*dx + dy*dy)
+		return dr >= radius - px  and dr <= radius
+end
+
+function distance_to_box(x, y, box)
+	-- get closest point on box to x, y
+	closest_x = mid(x, box.x0, box.x1)
+	closest_y = mid(y, box.y0, box.y1)
+	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
+end
+:: helpers.lua
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-15 20:52:17",revision=20]]
+function recompute_layout(game)
+	game.sprite_corner =
+	 	{ x = game.center.x - game.dim/2 + 1, 
+		  y = game.center.y - game.dim/2 + 1 } -- coords of top left sprite corner
+end
+
+function mark_sprite_overlap(game)
+	local sprite_dim, radius = game.dim, game.radius
+	local center = game.center
+	local sprite_corner = game.sprite_corner
+	local sum, n = 0, 0
+	game.num_red_pixels = 0
+	
+	-- sprite bounds (inclusive)
+	local sprite_box = get_bb_from_tl_corner(sprite_corner, sprite_dim)
+	-- circle bounding box
+	local circle_box = get_bounding_box(center, radius)
+	
+	for y = circle_box.y0, circle_box.y1 do -- go through y points of filled circle
+		local dy = y - game.center.y
+		for x = circle_box.x0, circle_box.x1 do -- go through x points of filled circle
+			local dx = x - game.center.x
+			-- only handle if x, y is on circle border
+			if is_hypotenuse_within_px_of_radius(dx, dy, radius, 1) then
+				-- only color the pixels within the sprite bounds red
+				if is_point_within_box(x, y, sprite_box) then
+					color_overlap(x, y)
+				end
+				-- only count points on the circle border outside sprite's box toward
+				--	 avg distance calculation 
+				if is_point_outside_box(x, y, sprite_box) then
+					-- calculate distance from closest sprite point to x,y
+					dist = distance_to_box(x, y, sprite_box)
+					sum += dist
+					n += 1
+				end
+			end
+		end
+	end
+	printh("Average distance from green circle points to sprite: "..sum / n)
+			
+end
+
+function color_overlap(x, y)
+	pset(x, y, colors.RED)
+	Game.num_red_pixels += 1
+end
+
+function measure_w_h(s)
+	clip(0, 0, 0, 0)
+	local w, h = print(s, 0, 0)
+	clip()
+	return w, h
+end
+:: main.lua
+--[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-15 22:16:36",revision=533]]
+include "config.lua"
+include "button_actions.lua"
+include "drawing.lua"
+include "geometry.lua"
+include "helpers.lua"
+include "phase_transitions.lua"
+
+Game = {
+	-- Initial Game state
+	dim = 8, -- width and height of sprite
+	center = { x = center.x, y = center.y }, -- circle center coords from config
+	is_space_clicked = false,
+	circle_color = colors.WHITE,
+	time0 = 0,
+	num_red_pixels = 0,
+	time_elapsed = 0,
+}
+
+function _init()
+	Game.time0 = time()
+	window_table.make_window()
+	Game.radius = Game.dim/2 + 1 -- set circle radius based on initial sprite size
+	recompute_layout(Game)
+	Game.current_phase = phases.instructions
+	instr = 1
+	end_msg = 1
+end
+
+function _update()
+	-- Phase 1: Instructions --
+	if Game.current_phase == phases.instructions then
+		instructions_update(Game)
+	-- Phase 2: Gameplay --
+	elseif Game.current_phase == phases.gameplay then
+		gameplay_update(Game)
+	-- Phase 3: Ending --
+	elseif  Game.current_phase == phases.ending then
+		if btnp() ~= 0 and end_msg < #end_msgs then
+			end_msg += 1
+		elseif btnp() ~= 0 then
+			Game.current_phase = phases.scoreboard
+		end
+	-- Phase 4: Scoreboard --
+	elseif  Game.current_phase == phases.scoreboard then
+	end
+end
+
+function _draw()
+	-- Phase 1: Instructions --
+	if Game.current_phase == phases.instructions then
+		cls()
+		draw_text_box(instructions_text[instr])
+	-- Phase 2: Gameplay --
+	elseif  Game.current_phase == phases.gameplay then
+		cls()
+		draw_objects(Game)
+		if Game.is_space_clicked then
+			mark_sprite_overlap(Game)
+			Game.circle_color = colors.GREEN
+			printh("num red pixels "..Game.num_red_pixels)
+			enter_ending(Game)
+		end
+	-- Phase 3: Ending --
+	elseif  Game.current_phase == phases.ending then
+		cls()
+		draw_objects(Game)
+		mark_sprite_overlap(Game)
+		draw_text_box(end_msgs[end_msg])
+	-- Phase 4: Scoreboard --
+	elseif  Game.current_phase == phases.scoreboard then         
+	end
+end
+
+
+:: phase_transitions.lua
+--[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-15 22:16:33",revision=6]]
+function instructions_update(game)
+	if btnp() ~= 0 then
+		if instr < #instructions_text then
+			instr += 1
+		else
+			game.current_phase = phases.gameplay
+		end
+	end
+end
+
+function gameplay_update(game)
+	handle_input(game)
+	recompute_layout(game)
+	if game.is_space_clicked then
+		if btnp() ~= 0 then
+			Game.current_phase = phases.ending
+		end
+	else
+		Game.dim += 0.1
+	end
+end
+
+function enter_ending(game)
+	if game.num_red_pixels == 0 then 
+		final_msg = "nice"
+	else 
+		final_msg = "ew"
+	end
+	end_msgs = {
+		string.format("You took %.2f seconds", game.time_elapsed),
+		string.format("And touched %f px of him...", game.num_red_pixels),
+		final_msg
+	}
+end
+:: .info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
+OS0xOCAxNDo1ODowMCIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzI3Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZV90cmFuc2l0aW9ucy5sdWEj
+MSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iaGVscGVycy5sdWEiLHdvcmtzcGFjZV9p
+bmRleD0xfSx7bG9jYXRpb249ImNvbmZpZy5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
+b249ImRyYXdpbmcubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZW9tZXRyeS5s
+dWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2lu
+ZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3b3Jrc3BhY2VfaW5kZXg9M319XV0=
+:: [eoc]
