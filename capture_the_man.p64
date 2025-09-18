@@ -22,7 +22,7 @@ JfZFDGYl9k0DACBMNQMA-xFLVfZKFQAl9kkVEDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEm
 DzkA-------------------------------------xRQbT04fX0=
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxNDo1ODowMCJdXQ==
+OS0xOCAxNjo1MTo0OSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -31,7 +31,7 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxNDo1ODowMCJdXQ==
+OS0xOCAxNjo1MTo0OSJdXQ==
 :: sfx/
 :: sfx/0.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ5Iixtb2RpZmllZD0iMjAyNS0w
@@ -42,7 +42,7 @@ IBABAA94AAEP8RAB8AACEAISAPMwIA8hD_kQATAPYZAPEQIgDyBQAQ-lEAHgAgggD7MgD6wQAg9Q
 AP------jR--AQCsz8gPQAAPEED--7DwcAsAZR--AQD-3FD-----Aw==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxNDo1ODowMCJdXQ==
+OS0xOCAxNjo1MTo0OSJdXQ==
 :: button_actions.lua
 --[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-15 22:40:52",revision=13]]
 function handle_input(game)
@@ -70,7 +70,7 @@ function spacebar_action(game)
 	end
 end
 :: config.lua
---[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-15 20:23:36",revision=41]]
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-18 16:41:03",revision=50]]
 colors = {
 	WHITE = 7,
 	RED = 8,
@@ -90,6 +90,7 @@ window_table = {
 	win_dim = 128,
 	win_title = "Capture the Man!"
 }
+
 function window_table:make_window()
 	window({
 		height = window_table.win_dim, 
@@ -159,6 +160,25 @@ function draw_text_box(text)
 		print(lines[i], (128 - widths[i])/2, tb_y0 + line_h*(i-1) + 6, 1)
 	end
 end
+:: game_state.lua
+--[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-18 16:41:23",revision=3]]
+function new_game_state()
+	Game = {
+		dim = 8, -- width and height of sprite
+		center = { x = center.x, y = center.y }, -- circle center coords from config
+		is_space_clicked = false,
+		circle_color = colors.WHITE,
+		time0 = 0,
+		num_red_pixels = 0,
+		time_elapsed = 0,
+		instruction_index = 1,
+		ending_msg_index = 1
+	}
+	Game.radius = Game.dim/2 + 1 -- set circle radius based on initial sprite size
+	Game.sprite_corner = get_sprite_corner_coords(Game)
+	Game.current_phase = phases.instructions
+	return Game
+end
 :: geometry.lua
 --[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-02 23:39:28",revision=29]]
 function get_bounding_box_coords(center, radius)
@@ -217,11 +237,16 @@ function distance_to_box(x, y, box)
 	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
 end
 :: helpers.lua
---[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-15 20:52:17",revision=20]]
-function recompute_layout(game)
-	game.sprite_corner =
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-18 16:26:30",revision=25]]
+function update_sprite_coords(game)
+	game.sprite_corner = get_sprite_corner_coords(game)
+end
+
+function get_sprite_corner_coords(game)
+	sprite_corner =
 	 	{ x = game.center.x - game.dim/2 + 1, 
 		  y = game.center.y - game.dim/2 + 1 } -- coords of top left sprite corner
+	return sprite_corner
 end
 
 function mark_sprite_overlap(game)
@@ -244,7 +269,7 @@ function mark_sprite_overlap(game)
 			if is_hypotenuse_within_px_of_radius(dx, dy, radius, 1) then
 				-- only color the pixels within the sprite bounds red
 				if is_point_within_box(x, y, sprite_box) then
-					color_overlap(x, y)
+					color_overlap(game, x, y)
 				end
 				-- only count points on the circle border outside sprite's box toward
 				--	 avg distance calculation 
@@ -261,9 +286,9 @@ function mark_sprite_overlap(game)
 			
 end
 
-function color_overlap(x, y)
+function color_overlap(game, x, y)
 	pset(x, y, colors.RED)
-	Game.num_red_pixels += 1
+	game.num_red_pixels += 1
 end
 
 function measure_w_h(s)
@@ -273,87 +298,74 @@ function measure_w_h(s)
 	return w, h
 end
 :: main.lua
---[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-15 22:16:36",revision=533]]
+--[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-18 16:44:50",revision=559]]
 include "config.lua"
 include "button_actions.lua"
 include "drawing.lua"
 include "geometry.lua"
 include "helpers.lua"
 include "phase_transitions.lua"
+include "game_state.lua"
 
-Game = {
-	-- Initial Game state
-	dim = 8, -- width and height of sprite
-	center = { x = center.x, y = center.y }, -- circle center coords from config
-	is_space_clicked = false,
-	circle_color = colors.WHITE,
-	time0 = 0,
-	num_red_pixels = 0,
-	time_elapsed = 0,
-}
 
 function _init()
-	Game.time0 = time()
+	game = new_game_state()
 	window_table.make_window()
-	Game.radius = Game.dim/2 + 1 -- set circle radius based on initial sprite size
-	recompute_layout(Game)
-	Game.current_phase = phases.instructions
-	instr = 1
-	end_msg = 1
+	game.time0 = time()
 end
 
 function _update()
 	-- Phase 1: Instructions --
-	if Game.current_phase == phases.instructions then
-		instructions_update(Game)
+	if game.current_phase == phases.instructions then
+		instructions_update(game)
 	-- Phase 2: Gameplay --
-	elseif Game.current_phase == phases.gameplay then
-		gameplay_update(Game)
+	elseif game.current_phase == phases.gameplay then
+		gameplay_update(game)
 	-- Phase 3: Ending --
-	elseif  Game.current_phase == phases.ending then
-		if btnp() ~= 0 and end_msg < #end_msgs then
-			end_msg += 1
+	elseif  game.current_phase == phases.ending then
+		if btnp() ~= 0 and game.ending_msg_index < #end_msgs then
+			game.ending_msg_index += 1
 		elseif btnp() ~= 0 then
-			Game.current_phase = phases.scoreboard
+			game.current_phase = phases.scoreboard
 		end
 	-- Phase 4: Scoreboard --
-	elseif  Game.current_phase == phases.scoreboard then
+	elseif  game.current_phase == phases.scoreboard then
 	end
 end
 
 function _draw()
 	-- Phase 1: Instructions --
-	if Game.current_phase == phases.instructions then
+	if game.current_phase == phases.instructions then
 		cls()
-		draw_text_box(instructions_text[instr])
+		draw_text_box(instructions_text[game.instruction_index])
 	-- Phase 2: Gameplay --
-	elseif  Game.current_phase == phases.gameplay then
+	elseif  game.current_phase == phases.gameplay then
 		cls()
-		draw_objects(Game)
-		if Game.is_space_clicked then
-			mark_sprite_overlap(Game)
-			Game.circle_color = colors.GREEN
-			printh("num red pixels "..Game.num_red_pixels)
-			enter_ending(Game)
+		draw_objects(game)
+		if game.is_space_clicked then
+			mark_sprite_overlap(game)
+			game.circle_color = colors.GREEN
+			printh("num red pixels "..game.num_red_pixels)
+			enter_ending(game)
 		end
 	-- Phase 3: Ending --
-	elseif  Game.current_phase == phases.ending then
+	elseif  game.current_phase == phases.ending then
 		cls()
-		draw_objects(Game)
-		mark_sprite_overlap(Game)
-		draw_text_box(end_msgs[end_msg])
+		draw_objects(game)
+		mark_sprite_overlap(game)
+		draw_text_box(end_msgs[game.ending_msg_index])
 	-- Phase 4: Scoreboard --
-	elseif  Game.current_phase == phases.scoreboard then         
+	elseif  game.current_phase == phases.scoreboard then         
 	end
 end
 
 
 :: phase_transitions.lua
---[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-15 22:16:33",revision=6]]
+--[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-18 16:28:21",revision=8]]
 function instructions_update(game)
 	if btnp() ~= 0 then
-		if instr < #instructions_text then
-			instr += 1
+		if game.instruction_index < #instructions_text then
+			game.instruction_index += 1
 		else
 			game.current_phase = phases.gameplay
 		end
@@ -362,13 +374,13 @@ end
 
 function gameplay_update(game)
 	handle_input(game)
-	recompute_layout(game)
+	update_sprite_coords(game)
 	if game.is_space_clicked then
 		if btnp() ~= 0 then
-			Game.current_phase = phases.ending
+			game.current_phase = phases.ending
 		end
 	else
-		Game.dim += 0.1
+		game.dim += 0.1
 	end
 end
 
@@ -386,11 +398,12 @@ function enter_ending(game)
 end
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxNDo1ODowMCIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzI3Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZV90cmFuc2l0aW9ucy5sdWEj
-MSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iaGVscGVycy5sdWEiLHdvcmtzcGFjZV9p
-bmRleD0xfSx7bG9jYXRpb249ImNvbmZpZy5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
-b249ImRyYXdpbmcubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZW9tZXRyeS5s
-dWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2lu
-ZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3b3Jrc3BhY2VfaW5kZXg9M319XV0=
+OS0xOCAxNjo1MTo0OSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzE2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnYW1lX3N0YXRlLmx1YSM0Iix3b3Jr
+c3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZV90cmFuc2l0aW9ucy5sdWEjMTMiLHdvcmtz
+cGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImhlbHBlcnMubHVhIzciLHdvcmtzcGFjZV9pbmRleD0x
+fSx7bG9jYXRpb249ImNvbmZpZy5sdWEjMjgiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249
+ImRyYXdpbmcubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZW9tZXRyeS5sdWEi
+LHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4
+PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3b3Jrc3BhY2VfaW5kZXg9M319XV0=
 :: [eoc]
