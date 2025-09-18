@@ -6,7 +6,9 @@ A pink-faced man will slowly grow in size while the player attempts to ensnare h
 
 ## Controls
 ↑ : Increase the circle radius
+
 ↓ : Decrease the circle radius
+
 SPACE: Stop the pink-faced man's growth
 
 ## Development
