@@ -4,25 +4,27 @@ version 2
 :: gfx/
 :: gfx/0.gfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
-OS0xNSAxOToyMzoxMCIscmV2aXNpb249MTZdXWx6NABVAwAA9zwAAPEoe1swXT17Ym1wPXB4dQBD
+OS0xOSAxOToyNzoyNCIscmV2aXNpb249MTddXWx6NACsAwAAUT0AAPEoe1swXT17Ym1wPXB4dQBD
 IBAQBPBWBxAHwBfQF8AHEAfwVixmbGFncz0wLHBhbl94PS0yLjM3NQ0A_gB5PS0xLjUsem9vbT04
 fSxGAP8pEL4wvxcg3QA9F00XTRc9Jw5NF-0BFy0XjQcCLQcCjR4tHv0QB00XfTctJ20HHk13Dv0B
 HgC9HgBvACX-G78XIN4A-gI3Ljf_BxcuF44HAi4HAo4fDi4d-hYXngc_p-4RHQC_HSC9EGIAJC-w
-8DkA-0ICuAHgPhdOF04XPicPDk4X-gG-Af4LAgcuAgeOHS4d-hAHThd_Ny4nbgcdTncN-gHGAQ8o
-AioCaQAPKAL-owLjAwDFAQ8oAkwGaQAPKAL-owLjAw8oAlAGaQAPKAI4BtIA-w5_Fx4njh8OHi3_
-ByceJ24XAgcOFwIHfi0eLf4Yl48C-0sPVgIAXxAtLi1_UAJLMxYvDmQAD0oCSATHAB8oQgIwDzkA
---------LmMSpzAXAAcCAFIXIBcQNwgAFSASACMABwIAxCcQ1xAXEAcQByAnEBYAsEcQFwAnAAcQ
-NyAHCAAiAEcIAI8gByDHIBfwDs8AJg85AP-----------------88ExgIARg9ULQEwVWEw8W9isF
-XhMWoCUPEwMfG0YPEw8VDxv2KzUeE1ZgJQYvEw8bJgUuDxUD9i4FEw0OVkAlJgUNAwYFAx4lDxP2
-LQwDDxsNHmYgJRYFHhMFDhMVFADxCRMFLnYQJQYFHgYFLg0LBQYc9i4MAwV_JhQA8DETDgUeA-Yy
-FS4FXhYAJRYFEx0TBQ4j9jAFLiUOJQ4mJQYMEw0OBQ4TDgwT9jAFHgUOBhUeBQ4mJQwTDBUGDg0D
-TwDwBy8VDhUOExUOFSYlDAMFTgUDC-YyBQ4fAKETBQ5GJQwLFR4lFADwCh4WBQ4GAwYFRiUMEzUG
-DAMM9jIlDgYVE2ZnAPAJNgwD9jUVDhYMA2YlFgwDJgwT9jYVJhNWHAD0ByYs9jsDC1YlFhz2QQNm
-JfZFDGYl9k0DACBMNQMA-xFLVfZKFQAl9kkVEDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEm
-DzkA-------------------------------------xRQbT04fX0=
+8DkAXWGADlcwDqcDAKBHPhcwDhcuLxcOCAAhLSAHAB1QBgD-GjBHEEcgDkcADkcQDlcOVxAORx5H
+DhANDicOHQ4nDg0gDS4NEA0uDUAtBQGXL-DwEgIq4D4XThdOFz4nDw5OF-4BGQL_CwIHLgIHjh0u
+Hf4QB04XfjcuJ24HHU53Df4BIAIPggIqAmkAD4ICOg85AP9CDygCAQI9BADFAQ8oAkwGaQAPKAL-
+owLjAw8oAlAGaQAPKAI4BtIA-w5_Fx4njh8OHi3_ByceJ24XAgcOFwIHfi0eLf4Yl48C-0sPVgIA
+XxAtLi1_UAJLMxYvDmQAD0oCSATHAB8oQgIwDzkA--------LmMSpzAXAAcCAFIXIBcQNwgAFSAS
+ACMABwIAxCcQ1xAXEAcQByAnEBYAsEcQFwAnAAcQNyAHCAAiAEcIAI8gByDHIBfwDs8AJg85AP--
+---------------88ExgIARg9ULQEwVWEw8W9isFXhMWoCUPEwMfG0YPEw8VDxv2KzUeE1ZgJQYv
+Ew8bJgUuDxUD9i4FEw0OVkAlJgUNAwYFAx4lDxP2LQwDDxsNHmYgJRYFHhMFDhMVFADxCRMFLnYQ
+JQYFHgYFLg0LBQYc9i4MAwV_JhQA8DETDgUeA-YyFS4FXhYAJRYFEx0TBQ4j9jAFLiUOJQ4mJQYM
+Ew0OBQ4TDgwT9jAFHgUOBhUeBQ4mJQwTDBUGDg0DTwDwBy8VDhUOExUOFSYlDAMFTgUDC-YyBQ4f
+AKETBQ5GJQwLFR4lFADwCh4WBQ4GAwYFRiUMEzUGDAMM9jIlDgYVE2ZnAPAJNgwD9jUVDhYMA2Yl
+FgwDJgwT9jYVJhNWHAD0ByYs9jsDC1YlFhz2QQNmJfZFDGYl9k0DACBMNQMA-xFLVfZKFQAl9kkV
+EDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEmDzkA--------------------------------
+-----xRQbT04fX0=
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAxNDo1Nzo0MyJdXQ==
+OS0xOSAyMToxMjo1MSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -31,21 +33,32 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAxNDo1Nzo0MyJdXQ==
+OS0xOSAyMToxMjo1MSJdXQ==
 :: sfx/
-:: sfx/0.sfx
-b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ5Iixtb2RpZmllZD0iMjAyNS0w
-OS0wMiAwMToxODozNSIscmV2aXNpb249N11dbHo0AOUAAACeCgAA-zBweHUAAygAAAQABA9AEAIO
-AAGgASACoA4ADxAADfDKAQIDQA8PkAQFBgdADJAICQoLQAyQDwwPDQ8ODEAM8P8BAOvwB6oBEAYP
-IBABAA94AAEP8RAB8AACEAISAPMwIA8hD_kQATAPYZAPEQIgDyBQAQ-lEAHgAgggD7MgD6wQAg9Q
-8IIBcA8oD-8ADyDwxA-4Cg--D4AP9w8NAfAJWAAyIAEgUwARDlIAcCABMA9A8MM0AC3wxjEAHw4w
-AP------jR--AQCsz8gPQAAPEED--7DwcAsAZR--AQD-3FD-----Aw==
+:: sfx/1.sfx
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
+OS0xOSAxOToxMTowOCIscmV2aXNpb249M11dbHo0APoCAABJDAAA-zdweHUAAygAAAQABA9AEAIO
+AAGgASACoA4ADxAADfDKAQIDBAUGAAIPf5ACAwYHMAIDkAgJCgtADw_QDwwPDQ8ODw9ADPD-AQDr
+8EKqARAGDygQASABIAHwAAIQAg8gEAEgDyUAD5YAATAPQZABChAED84PZhAPwiAPRSAPNgAPYPCl
+Dxzwxw-4Cg--D4AP9w8NAXAPaw9pD2MPa8BQABQnUAAkDxJRAPoZISABMA_fkAEIEAQPMA_bEAfw
+pwFgDyEQDx8KDy8KBQ8VBQAKEAXwuVUAoHMPbg9hD3IPZbBXAB8lVwACQiAND-9YAPoEGA9OAAQP
+Qg_l8K4PDQAE8MMBAE8AkWgPaQ9oD2EPdE8AFhn2AGIGDyAPFxFPAGEED8wPvYBRAPwDUw__AUAK
+8KsPfAAN8AUPGvCvnwDgeQ9uD3QPaA9iD2EPc4BWAB0dTAH6GCEgAQ-_EAQPVg8xgA8RAhAED0AP
+KEACIAEEEAQPIPCjDygPngLwxVsAMGYPbVUAMB9zoFUAGCOrADAkDxyrAPoeDwwPJwABD-0QBA9Z
+DzqADyECIA9AUAIPEhABAyAH8KIIDxgP3wqwAaAPKPCsXQBxcA9pD3APZawBFyCwABUOqgGYQPDD
+DygP--DGOQBv8AkBEAYOMAD-----nB--AQCs_wDID0AADQ5ADycPFw8dDxcIABMnCgAf-yAAAAQO
+APAFJw8X--8Q8AAJ4PkQ-gAJ7vkQ8HBVAHFADydZHyhpBgDyBfkXAlkSaQJZEvkXDlkeaQ5ZHvkX
+JgDzEg4BEBkfJxkbGQ87CQxJHygZFRkPPQkE_RUTGRMZAwkDSQgAo-kVHhkeGQ4JDkkIACT5FEEA
+8BcgCTsZC4k1GQU5Dz8JB-kSPwQZCIk4GQg5CAkI_RI_GQ6JPhkOOTMAEhEzAPQCQAl-G3l-HPkY
+eHl4_Rh_eX6NAKBACR86DBYMJmkWBgDT_RePBWmK_ReOaY75FiEAX-mw8HACCAAzH-8BAP-WUP--
+---d
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAxNDo1Nzo0MyJdXQ==
+OS0xOSAyMToxMjo1MSJdXQ==
 :: button_actions.lua
---[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-15 22:40:52",revision=13]]
+--[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-19 20:34:07",revision=29]]
 function handle_input(game)
+	-- keyboard actions --
 	if (btn(2)) up_action(game)
 	if (btn(3)) down_action(game)
 	if (key("space")) spacebar_action(game)
@@ -60,6 +73,7 @@ end
 function down_action(game)
 	if not game.is_space_clicked then
 		game.radius -= 1
+		game.radius = max(1, game.radius - 1)
 	end
 end
 
@@ -70,7 +84,7 @@ function spacebar_action(game)
 	end
 end
 :: config.lua
---[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-18 21:30:57",revision=58]]
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-19 19:31:19",revision=59]]
 colors = {
 	WHITE = 7,
 	RED = 8,
@@ -107,14 +121,27 @@ center = {
 	x = window_table.win_dim/2 - 1, -- x-value (px) of screen center
 	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
 }
+
+function play_music()
+	fetch("sfx/1.sfx"):poke(0x80000)
+	music(1, nil, nil, 0x80000)
+end
+
+function stop_music()
+	music(-1, nil, nil, 0x80000)
+end
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-18 21:09:56",revision=181]]
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-19 20:54:15",revision=205]]
 function draw_objects(game) 
 	-- Draw circle
 	circ(game.center.x, game.center.y, game.radius, game.circle_color)
 	-- Draw sprite
 	sspr(1, 0, 0, 16, 16, 
 			game.sprite_corner.x, game.sprite_corner.y, game.dim, game.dim)
+end
+
+function draw_music_button(game)
+	sspr(5, 0, 0, 16, 16, 2, 2, 12, 12)
 end
 
 function color_overlap(pixels)
@@ -146,12 +173,10 @@ function draw_text_box(text)
 	if #lines == 0 then return end
 
 	local widths = {}
-	local widest = 0
 	h = 0
 	for i = 1, #lines do
 		local line_w, line_h = measure_w_h(lines[i])
 		widths[i] = line_w
-		widest = max(w, line_w)
 		h += line_h
 	end
 		
@@ -169,7 +194,7 @@ function draw_text_box(text)
 	end
 end
 :: game_state.lua
---[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-19 14:56:08",revision=67]]
+--[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-19 21:01:24",revision=75]]
 function new_game_state()
 	local Game = {
 		dim = 8, -- width and height of sprite
@@ -188,7 +213,10 @@ function new_game_state()
 			touched_px_count = 0,
 			avg_distance = 0,
 			resolved = false,
-		}
+		},
+		mouse_info = {x = 0, y = 0, left_click = false},
+		show_mouse_overlay = false, 
+		music_on = true
 	}
 	
 	function Game:reset_round()
@@ -197,7 +225,7 @@ function new_game_state()
 		Game.is_space_clicked = false
 		Game.time_elapsed = 0
 		Game.circle_color = colors.WHITE
-		Game.ending_msg_index = 0
+		Game.ending_msg_index = 1
 		Game.sprite_corner = get_sprite_corner_coords(Game)
 		Game.overlap = {
 			touched_pixels = {},
@@ -278,7 +306,7 @@ function distance_to_box(x, y, box)
 	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
 end
 :: helpers.lua
---[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-18 20:57:05",revision=35]]
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-19 21:09:51",revision=54]]
 function update_sprite_coords(game)
 	game.sprite_corner = get_sprite_corner_coords(game)
 end
@@ -312,8 +340,7 @@ function compute_sprite_overlap(game)
 				--	 avg distance calculation 
 				if is_point_outside_box(x, y, sprite_box) then
 					-- calculate distance from closest sprite point to x,y
-					dist = distance_to_box(x, y, sprite_box)
-					sum += dist
+					sum += distance_to_box(x, y, sprite_box)
 					n += 1
 				end
 			end
@@ -334,8 +361,40 @@ function measure_w_h(s)
 	clip()
 	return w, h
 end
+
+function get_mouse_info(game)
+	local mx, my, mb, _, _ = mouse()
+	game.mouse_info = { x = mx, y = my, left_click = (mb == 0x1)}
+end
+
+function make_music_toggle(game)
+	if is_mouse_on_music_button(game)
+		and game.mouse_info.left_click then
+			game.music_on = not game.music_on
+	end
+end
+
+function is_mouse_on_button(mx, my, button_tl_corner, bw, bh)
+	local x, y = button_tl_corner.x, button_tl_corner.y
+   return mx >= x and mx <= x + bw 
+   		and my >= y and my <= y + bh
+end
+
+function is_mouse_on_music_button(game)
+	return is_mouse_on_button(game.mouse_info.x, game.mouse_info.y,
+		{x = 2, y = 2}, 12, 12)
+end
+
+function handle_music(game)
+	fetch("sfx/1.sfx"):poke(0x80000) -- load 256k into 0x80000..0xbffff
+	if game.music_on then
+		music(1, nil, nil, 0x80000) -- play music using 0x80000 as the audio base address
+	else
+		music(-1)
+	end
+end
 :: main.lua
---[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-18 19:09:16",revision=618]]
+--[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-19 21:12:02",revision=658]]
 include "config.lua"
 include "button_actions.lua"
 include "drawing.lua"
@@ -354,6 +413,9 @@ end
 
 function _update()
 	local phase = game.phase
+	handle_music(game)
+	get_mouse_info(game)
+	make_music_toggle(game)
 	if phase and phase.update then
 		phase.update(game)
 	end
@@ -364,11 +426,12 @@ function _draw()
 	if phase and phase.draw then
 		phase.draw(game)
 	end
+	draw_music_button(game)
 end
 
 
 :: phase_transitions.lua
---[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-18 21:43:06",revision=110]]
+--[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-19 19:13:44",revision=116]]
 phase_handlers = {
 	instructions = {
 		enter = 
@@ -457,7 +520,7 @@ phase_handlers = {
 				cls()
 				y = 36
 				print(string.format("Time: %.2f sec", game.time_elapsed), 24, y, colors.WHITE)
-				print("Overlap: "..game.overlap.touched_px_count, 24, y + 12, colors.WHITE)
+				print("Overlap: "..game.overlap.touched_px_count.." px", 24, y + 12, colors.WHITE)
 				print(string.format("Avg dist: %.2f px", game.overlap.avg_distance), 24, y + 24, colors.WHITE)
 				print("Play again? (y/n)", 24, y + 40, colors.WHITE)
 			end,
@@ -487,12 +550,11 @@ phase_handlers = {
 }
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAxNDo1Nzo0MyIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249InBoYXNlX3RyYW5zaXRpb25zLmx1YSM5
-MCIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjMjgiLHdvcmtz
-cGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImhlbHBlcnMubHVhIzQxIix3b3Jrc3BhY2VfaW5kZXg9
-MX0se2xvY2F0aW9uPSJjb25maWcubHVhIzEyIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9u
-PSJkcmF3aW5nLmx1YSM0MCIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2VvbWV0cnku
-bHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngvMC5nZngiLHdvcmtzcGFjZV9p
-bmRleD0yfSx7bG9jYXRpb249Im1hcC8wLm1hcCIsd29ya3NwYWNlX2luZGV4PTN9fV1d
+OS0xOSAyMToxMjo1MSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzIwIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJoZWxwZXJzLmx1YSM3OSIsd29ya3Nw
+YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZHJhd2luZy5sdWEjNyIsd29ya3NwYWNlX2luZGV4PTF9
+LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjMjEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
+b249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3
+b3Jrc3BhY2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFjZV9pbmRleD00
+fX1dXQ==
 :: [eoc]
