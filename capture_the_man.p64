@@ -22,7 +22,7 @@ JfZFDGYl9k0DACBMNQMA-xFLVfZKFQAl9kkVEDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEm
 DzkA-------------------------------------xRQbT04fX0=
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxOTowOTozNCJdXQ==
+OS0xOSAxNDo1Nzo0MyJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -31,7 +31,7 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxOTowOTozNCJdXQ==
+OS0xOSAxNDo1Nzo0MyJdXQ==
 :: sfx/
 :: sfx/0.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ5Iixtb2RpZmllZD0iMjAyNS0w
@@ -42,7 +42,7 @@ IBABAA94AAEP8RAB8AACEAISAPMwIA8hD_kQATAPYZAPEQIgDyBQAQ-lEAHgAgggD7MgD6wQAg9Q
 AP------jR--AQCsz8gPQAAPEED--7DwcAsAZR--AQD-3FD-----Aw==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxOTowOTozNCJdXQ==
+OS0xOSAxNDo1Nzo0MyJdXQ==
 :: button_actions.lua
 --[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-15 22:40:52",revision=13]]
 function handle_input(game)
@@ -70,20 +70,19 @@ function spacebar_action(game)
 	end
 end
 :: config.lua
---[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-18 17:54:52",revision=53]]
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-18 21:30:57",revision=58]]
 colors = {
 	WHITE = 7,
 	RED = 8,
 	GREEN = 11
 }
 
---phases = { 
---		instructions = 0, gameplay = 1, ending = 2, scoreboard = 3 }
 phases = {
         instructions = "instructions",
         gameplay = "gameplay",
         ending = "ending",
-        scoreboard = "scoreboard"
+        scoreboard = "scoreboard",
+        exit_game = "exit_game",
 }
 		
 instructions_text = {
@@ -109,7 +108,7 @@ center = {
 	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
 }
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-15 20:11:11",revision=177]]
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-18 21:09:56",revision=181]]
 function draw_objects(game) 
 	-- Draw circle
 	circ(game.center.x, game.center.y, game.radius, game.circle_color)
@@ -118,11 +117,16 @@ function draw_objects(game)
 			game.sprite_corner.x, game.sprite_corner.y, game.dim, game.dim)
 end
 
+function color_overlap(pixels)
+	for pixel in all(pixels) do
+		pset(pixel.x, pixel.y, colors.RED)
+	end
+end
+
 function wrap_text(text, max_w)
 	local out, line_ = {}, ""
 	for word in all(split(text, " ")) do
 		line_temp = line_..word.." "
---		local w = print(line_temp, 0, 0); cls()
 		local w, _ = measure_w_h(line_temp)
 		if w > max_w and line ~= "" then
 			add(out, line_)
@@ -145,8 +149,6 @@ function draw_text_box(text)
 	local widest = 0
 	h = 0
 	for i = 1, #lines do
---		local line_w, line_h = print(lines[i], 0, 0)
---		cls()
 		local line_w, line_h = measure_w_h(lines[i])
 		widths[i] = line_w
 		widest = max(w, line_w)
@@ -167,7 +169,7 @@ function draw_text_box(text)
 	end
 end
 :: game_state.lua
---[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-18 19:01:54",revision=49]]
+--[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-19 14:56:08",revision=67]]
 function new_game_state()
 	local Game = {
 		dim = 8, -- width and height of sprite
@@ -177,10 +179,16 @@ function new_game_state()
 		is_space_clicked = false,
 		time0 = 0,
 		time_elapsed = 0,
-		num_red_pixels = 0,
+		time_exited = 0,
 		circle_color = colors.WHITE,
 		instruction_index = 1,
 		ending_msg_index = 1,
+		overlap = {
+			touched_pixels = {},
+			touched_px_count = 0,
+			avg_distance = 0,
+			resolved = false,
+		}
 	}
 	
 	function Game:reset_round()
@@ -188,19 +196,20 @@ function new_game_state()
 		Game.radius = Game.dim/2 - 1 -- set circle radius based on initial sprite size
 		Game.is_space_clicked = false
 		Game.time_elapsed = 0
-		Game.num_red_pixels = 0
 		Game.circle_color = colors.WHITE
---		Game.instruction_index = 1
 		Game.ending_msg_index = 0
 		Game.sprite_corner = get_sprite_corner_coords(Game)
+		Game.overlap = {
+			touched_pixels = {},
+			touched_px_count = 0,
+			avg_distance = 0,
+			resolved = false,
+		}
 	end
 		
 	function Game:set_phase(id)
 		local handler = phase_handlers[id]
 		assert(handler, "unknown phase "..tostr(id))
-		if Game.phase and Game.phase.exit_phase then
-			Game.phase.exit_phase(Game)
-		end
 		Game.phase_id = id
 		Game.phase = handler
 		if Game.phase.enter then
@@ -269,7 +278,7 @@ function distance_to_box(x, y, box)
 	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
 end
 :: helpers.lua
---[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-18 17:25:19",revision=26]]
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-18 20:57:05",revision=35]]
 function update_sprite_coords(game)
 	game.sprite_corner = get_sprite_corner_coords(game)
 end
@@ -281,27 +290,23 @@ function get_sprite_corner_coords(game)
 	return sprite_corner
 end
 
-function mark_sprite_overlap(game)
-	local sprite_dim, radius = game.dim, game.radius
-	local center = game.center
-	local sprite_corner = game.sprite_corner
-	local sum, n = 0, 0
-	game.num_red_pixels = 0
+function compute_sprite_overlap(game)
+	local touched, sum, n = {}, 0, 0
 	
 	-- sprite bounds (inclusive)
-	local sprite_box = get_bb_from_tl_corner(sprite_corner, sprite_dim)
+	local sprite_box = get_bb_from_tl_corner(game.sprite_corner, game.dim)
 	-- circle bounding box
-	local circle_box = get_bounding_box(center, radius)
+	local circle_box = get_bounding_box(game.center, game.radius)
 	
 	for y = circle_box.y0, circle_box.y1 do -- go through y points of filled circle
 		local dy = y - game.center.y
 		for x = circle_box.x0, circle_box.x1 do -- go through x points of filled circle
 			local dx = x - game.center.x
 			-- only handle if x, y is on circle border
-			if is_hypotenuse_within_px_of_radius(dx, dy, radius, 1) then
+			if is_hypotenuse_within_px_of_radius(dx, dy, game.radius, 1) then
 				-- only color the pixels within the sprite bounds red
 				if is_point_within_box(x, y, sprite_box) then
-					color_overlap(game, x, y)
+					add(touched, { x = x, y = y})
 				end
 				-- only count points on the circle border outside sprite's box toward
 				--	 avg distance calculation 
@@ -314,13 +319,13 @@ function mark_sprite_overlap(game)
 			end
 		end
 	end
-	printh("Average distance from green circle points to sprite: "..sum / n)
-			
-end
-
-function color_overlap(game, x, y)
-	pset(x, y, colors.RED)
-	game.num_red_pixels += 1
+	local avg = n > 0 and  sum / n or 0
+	return {
+		touched_pixels = touched,
+		touched_px_count = #touched,
+		avg_distance = avg,
+		resolved = true,
+	}		
 end
 
 function measure_w_h(s)
@@ -363,7 +368,7 @@ end
 
 
 :: phase_transitions.lua
---[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-18 19:08:16",revision=57]]
+--[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-18 21:43:06",revision=110]]
 phase_handlers = {
 	instructions = {
 		enter = 
@@ -396,31 +401,35 @@ phase_handlers = {
 			function(game)
 				handle_input(game)
 				update_sprite_coords(game)
-				if game.is_space_clicked then
-					game:set_phase(phases.ending)
-				else
+				
+				if not game.is_space_clicked then
 					game.dim += 0.1
 					update_sprite_coords(game)
+				else
+					if not game.overlap.resolved then
+						local overlap = compute_sprite_overlap(game)
+						game.overlap = overlap
+						game.circle_color = colors.GREEN
+					end
+					game:set_phase(phases.ending)
 				end
 			end, 
 		draw = 
 			function(game)
 				cls()
 				draw_objects(game)
-				if game.is_space_clicked then
-					mark_sprite_overlap(game)
-					game.circle_color = colors.GREEN
-					printh("num red pixels "..game.num_red_pixels)
+				if game.overlap.resolved then
+					color_overlap(game.overlap.touched_pixels)
 				end
 			end,
 	},
 	ending = {
 		enter =
 			function(game)
-				local verdict = game.num_red_pixels == 0 and "nice" or "ew"
+				local verdict = game.overlap.touched_px_count == 0 and "nice" or "ew"
 				end_msgs = {
 					string.format("You took %.2f seconds", game.time_elapsed),
-					string.format("And touched %f px of him...", game.num_red_pixels),
+					string.format("And touched %f px of him...", game.overlap.touched_px_count),
 					verdict
 				}
 			end,
@@ -438,19 +447,52 @@ phase_handlers = {
 			function(game)
 				cls()
 				draw_objects(game)
-				mark_sprite_overlap(game)
+				color_overlap(game.overlap.touched_pixels)
 				draw_text_box(end_msgs[game.ending_msg_index])
+			end,
+	},
+	scoreboard = {
+		draw =
+			function(game)
+				cls()
+				y = 36
+				print(string.format("Time: %.2f sec", game.time_elapsed), 24, y, colors.WHITE)
+				print("Overlap: "..game.overlap.touched_px_count, 24, y + 12, colors.WHITE)
+				print(string.format("Avg dist: %.2f px", game.overlap.avg_distance), 24, y + 24, colors.WHITE)
+				print("Play again? (y/n)", 24, y + 40, colors.WHITE)
+			end,
+		update =
+			function(game)
+				if keyp("n") then
+					game.time_exited = time()
+					game:set_phase(phases.exit_game)
+				elseif keyp("y") then
+					game:set_phase(phases.instructions)
+				end
+			end,
+	},
+	exit_game = {
+		update = 
+			function(game)
+				if time() - game.time_exited > .75 then
+					exit()
+				end
+			end,
+		draw = 
+			function(game)
+				cls()
+				print("Exiting...", 0, 0, colors.WHITE)
 			end
-	}
+	},
 }
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOCAxOTowOTozNCIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249InBoYXNlX3RyYW5zaXRpb25zLmx1YSM3
-OSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjMzAiLHdvcmtz
-cGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImhlbHBlcnMubHVhIzIiLHdvcmtzcGFjZV9pbmRleD0x
-fSx7bG9jYXRpb249ImNvbmZpZy5sdWEjMTQiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249
-ImRyYXdpbmcubHVhIzYiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249Imdlb21ldHJ5Lmx1
-YSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2Z4LzAuZ2Z4Iix3b3Jrc3BhY2VfaW5k
-ZXg9Mn0se2xvY2F0aW9uPSJtYXAvMC5tYXAiLHdvcmtzcGFjZV9pbmRleD0zfX1dXQ==
+OS0xOSAxNDo1Nzo0MyIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249InBoYXNlX3RyYW5zaXRpb25zLmx1YSM5
+MCIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjMjgiLHdvcmtz
+cGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImhlbHBlcnMubHVhIzQxIix3b3Jrc3BhY2VfaW5kZXg9
+MX0se2xvY2F0aW9uPSJjb25maWcubHVhIzEyIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9u
+PSJkcmF3aW5nLmx1YSM0MCIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2VvbWV0cnku
+bHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngvMC5nZngiLHdvcmtzcGFjZV9p
+bmRleD0yfSx7bG9jYXRpb249Im1hcC8wLm1hcCIsd29ya3NwYWNlX2luZGV4PTN9fV1d
 :: [eoc]
