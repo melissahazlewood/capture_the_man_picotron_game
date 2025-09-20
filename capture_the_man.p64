@@ -24,7 +24,7 @@ EDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEmDzkA--------------------------------
 -----xRQbT04fX0=
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMToxMjo1MSJdXQ==
+OS0xOSAyMjozMzowOSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -33,7 +33,7 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMToxMjo1MSJdXQ==
+OS0xOSAyMjozMzowOSJdXQ==
 :: sfx/
 :: sfx/1.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
@@ -54,7 +54,7 @@ eHl4_Rh_eX6NAKBACR86DBYMJmkWBgDT_RePBWmK_ReOaY75FiEAX-mw8HACCAAzH-8BAP-WUP--
 ---d
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMToxMjo1MSJdXQ==
+OS0xOSAyMjozMzowOSJdXQ==
 :: button_actions.lua
 --[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-19 20:34:07",revision=29]]
 function handle_input(game)
@@ -194,7 +194,7 @@ function draw_text_box(text)
 	end
 end
 :: game_state.lua
---[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-19 21:01:24",revision=75]]
+--[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-19 21:39:42",revision=77]]
 function new_game_state()
 	local Game = {
 		dim = 8, -- width and height of sprite
@@ -214,7 +214,8 @@ function new_game_state()
 			avg_distance = 0,
 			resolved = false,
 		},
-		mouse_info = {x = 0, y = 0, left_click = false},
+		mouse_info = {
+			x = 0, y = 0, left_click = false, left_click_pressed = false},
 		show_mouse_overlay = false, 
 		music_on = true
 	}
@@ -306,7 +307,7 @@ function distance_to_box(x, y, box)
 	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
 end
 :: helpers.lua
---[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-19 21:09:51",revision=54]]
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-19 22:31:14",revision=77]]
 function update_sprite_coords(game)
 	game.sprite_corner = get_sprite_corner_coords(game)
 end
@@ -364,14 +365,14 @@ end
 
 function get_mouse_info(game)
 	local mx, my, mb, _, _ = mouse()
-	game.mouse_info = { x = mx, y = my, left_click = (mb == 0x1)}
-end
-
-function make_music_toggle(game)
-	if is_mouse_on_music_button(game)
-		and game.mouse_info.left_click then
-			game.music_on = not game.music_on
-	end
+	local left_click = (mb == 0x1)
+	local prev_left_down = game.mouse_info and game.mouse_info.left_click or false
+	game.mouse_info = { 
+		x = mx,
+		y = my,
+		left_click = left_click,
+		left_click_pressed = left_click and not prev_left_down
+	}
 end
 
 function is_mouse_on_button(mx, my, button_tl_corner, bw, bh)
@@ -385,16 +386,29 @@ function is_mouse_on_music_button(game)
 		{x = 2, y = 2}, 12, 12)
 end
 
-function handle_music(game)
-	fetch("sfx/1.sfx"):poke(0x80000) -- load 256k into 0x80000..0xbffff
-	if game.music_on then
-		music(1, nil, nil, 0x80000) -- play music using 0x80000 as the audio base address
-	else
-		music(-1)
-	end
-end
+music_table = {
+	init_music =
+		function(game)
+			fetch("sfx/1.sfx"):poke(0x80000) -- load 256k into 0x80000..0xbffff
+			if game.music_on then
+				music(1, nil, nil, 0x80000) -- play music using 0x80000 as the audio base address
+			end
+		end,
+	toggle_music =
+		function(game)
+			if is_mouse_on_music_button(game)
+				and game.mouse_info.left_click_pressed then
+					game.music_on = not game.music_on
+			end
+			if game.music_on and stat(466) == -1 then
+				music(1, nil, nil, 0x80000)
+			elseif not game.music_on and stat(466) ~= -1 then
+				music(-1)
+			end
+		end
+}
 :: main.lua
---[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-19 21:12:02",revision=658]]
+--[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-19 22:30:54",revision=673]]
 include "config.lua"
 include "button_actions.lua"
 include "drawing.lua"
@@ -408,14 +422,14 @@ local game
 function _init()
 	game = new_game_state()
 	window_table.make_window()
+	music_table.init_music(game)
 	game:set_phase(phases.instructions)
 end
 
 function _update()
 	local phase = game.phase
-	handle_music(game)
 	get_mouse_info(game)
-	make_music_toggle(game)
+	music_table.toggle_music(game)
 	if phase and phase.update then
 		phase.update(game)
 	end
@@ -550,11 +564,11 @@ phase_handlers = {
 }
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMToxMjo1MSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzIwIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJoZWxwZXJzLmx1YSM3OSIsd29ya3Nw
-YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZHJhd2luZy5sdWEjNyIsd29ya3NwYWNlX2luZGV4PTF9
-LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjMjEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
-b249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3
-b3Jrc3BhY2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFjZV9pbmRleD00
-fX1dXQ==
+OS0xOSAyMjozMzowOSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzIxIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJoZWxwZXJzLmx1YSM4NiIsd29ya3Nw
+YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjNCIsd29ya3NwYWNlX2luZGV4
+PTF9LHtsb2NhdGlvbj0iZHJhd2luZy5sdWEjNyIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlv
+bj0iZ2Z4LzAuZ2Z4Iix3b3Jrc3BhY2VfaW5kZXg9Mn0se2xvY2F0aW9uPSJtYXAvMC5tYXAiLHdv
+cmtzcGFjZV9pbmRleD0zfSx7bG9jYXRpb249InNmeC8xLnNmeCIsd29ya3NwYWNlX2luZGV4PTR9
+fV1d
 :: [eoc]
