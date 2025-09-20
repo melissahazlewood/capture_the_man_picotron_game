@@ -1,30 +1,296 @@
 picotron cartridge // www.picotron.net
 version 2
 
+:: components/
+:: components/capture_zone.lua
+--[[pod_format="raw",created="2025-09-20 15:53:35",modified="2025-09-20 17:59:05",revision=17]]
+function new_capture_zone(center)
+	local capture_zone = {
+		radius = 3,
+		center = { -- coordinates for the center of the circle, given window center
+			x = center.x,
+			y = center.y
+		},
+		outline_color = colors.WHITE,
+		size_locked = false
+	}
+	
+	function capture_zone:reset_zone()
+		capture_zone.radius = 3
+		capture_zone.center = { -- coordinates for the center of the circle, given window center
+			x = center.x,
+			y = center.y
+		}
+		capture_zone.outline_color = colors.WHITE
+		capture_zone.size_locked = false
+	end
+	
+	function capture_zone:grow(amount)
+		if not capture_zone.size_locked then
+			capture_zone.radius += amount
+		end
+	end
+	
+	function capture_zone:shrink(amount)
+		if not capture_zone.size_locked then
+			capture_zone.radius = max(1, capture_zone.radius - amount)
+		end
+	end
+	
+	function capture_zone:lock_size()
+		capture_zone.size_locked = true
+	end
+	
+	function capture_zone:is_size_locked()
+		return capture_zone.size_locked
+	end
+	
+	function capture_zone:get_radius()
+		return capture_zone.radius
+	end
+	
+	function capture_zone:get_center()
+		return capture_zone.center
+	end
+	
+	function capture_zone:get_color()
+		return capture_zone.outline_color
+	end
+	
+	function capture_zone:set_color(new_color)
+		capture_zone.outline_color = new_color
+	end
+
+	return capture_zone
+end
+:: components/music_controller.lua
+--[[pod_format="raw",created="2025-09-20 18:52:10",modified="2025-09-20 19:15:23",revision=5]]
+function new_music_controller()
+	local controller = {
+		channel = 1,
+		sounds_are_loaded = false,
+		playing = false
+	}
+	
+	function controller:reset_controller()
+		channel = 1
+		sounds_loaded = false
+		playing = false
+	end
+	
+	function controller:load_sounds()
+		if controller.sounds_are_loaded then
+			return
+		end
+		fetch("sfx/1.sfx"):poke(0x80000) -- load 256k into 0x80000..0xbffff
+		controller.sounds_are_loaded = true
+	end
+	
+	function controller:play_music()
+		controller:load_sounds()
+		if controller.playing then
+			return
+		end
+		music(controller.channel, nil, nil, 0x80000) -- play music using 0x80000 as the audio base address
+		controller.playing = true
+	end
+
+	function controller:stop_music()
+		music(-1)
+		controller.playing = false
+	end
+	
+	function controller:toggle_music()
+		if controller.playing then
+			controller:stop_music()
+		else
+			controller:play_music()
+		end
+	end
+	
+	function controller:is_music_playing()
+		return controller.playing
+	end
+	
+	return controller
+end
+:: components/overlap_report.lua
+--[[pod_format="raw",created="2025-09-20 18:28:12",modified="2025-09-20 18:44:43",revision=7]]
+function new_overlap_report()
+	local overlap = {
+		touched_pixels = {},
+		touched_px_count = 0,
+		avg_distance = 0,
+		resolved = false,
+	}
+	
+	function overlap:reset_overlap()
+		overlap.touched_pixels = {}
+		overlap.touched_px_count = 0
+		overlap.avg_distance = 0
+		overlap.resolved = false
+	end
+	
+	function overlap:get_pixels()
+		return overlap.touched_pixels
+	end
+	
+	function overlap:get_pixel_count()
+		return overlap.touched_px_count
+	end
+		
+	function overlap:get_avg_distance()
+		return overlap.avg_distance
+	end
+	
+	function overlap:is_resolved()
+		return overlap.resolved
+	end
+	
+	function overlap:apply(computation_result)
+		overlap.touched_pixels = computation_result.touched_pixels or {}
+		overlap.touched_px_count = computation_result.touched_px_count or #computation_result.touched_pixels
+		overlap.avg_distance = computation_result.avg_distance
+		overlap.resolved = computation_result.resolved
+	end
+	
+	return overlap
+end
+:: components/round_timer.lua
+--[[pod_format="raw",created="2025-09-20 18:03:35",modified="2025-09-20 18:17:11",revision=6]]
+function new_timer()
+	local timer = {
+		time0 = 0,
+		time_elapsed = 0
+	}
+	
+	function timer:reset_timer()
+		timer.time0 = 0
+		time_elapsed = 0
+	end
+	
+	function timer:start_timer()
+		timer.time0 = time()
+	end
+	
+	function timer:stop_timer()
+		timer.time_elapsed = time() - timer.time0
+	end
+	
+	return timer
+end
+:: components/target.lua
+--[[pod_format="raw",created="2025-09-20 17:59:42",modified="2025-09-20 18:17:56",revision=3]]
+function new_target(center)
+	local target = {
+		dim = 8, --width and height of target sprite
+		size_locked = false
+	}
+	
+	function target:reset_target()
+		target.dim = 8
+		target.size_locked = false
+	end
+	
+	function target:grow(amount)
+		if not target.size_locked then
+			target.dim += amount
+		end
+	end
+	
+	function target:shrink(amount)
+		if not target.size_locked then
+			target.dim = max(1, target.dim - 1)
+		end
+	end
+	
+	function target:lock_size()
+		target.size_locked = true
+	end
+	
+	function target:is_size_locked()
+		return target.size_locked
+	end
+	
+	function target:get_dimension()
+		return target.dim
+	end
+	
+	function target:get_corner() --top left corner
+		return {
+			x = center.x - target.dim/2 + 1, 
+			y = center.y - target.dim/2 + 1 }
+	end
+	
+	function target:get_bounds()
+		return get_bb_from_tl_corner(target:get_corner(), target.dim)
+	end
+	
+	function target:compute_overlap(capture_zone)
+		local touched, sum, n = {}, 0, 0
+		local target_box = target:get_bounds()
+		local zone_center, zone_radius = capture_zone:get_center(), capture_zone:get_radius()
+		local zone_box = get_bounding_box(zone_center, zone_radius)
+		
+		for y = zone_box.y0, zone_box.y1 do
+			local dy = y - zone_center.y
+			for x = zone_box.x0, zone_box.x1 do
+				local dx = x - zone_center.x
+				if is_hypotenuse_within_px_of_radius(dx, dy, zone_radius, 1) then
+					if is_point_within_box(x, y, target_box) then
+						add(touched, { x = x, y = y})
+					end 
+					if is_point_outside_box(x, y, target_box) then
+						sum += distance_to_box(x, y, target_box)
+						n += 1
+					end
+				end
+			end
+		end
+		local avg = n > 0 and  sum / n or 0
+		return {
+			touched_pixels = touched,
+			touched_px_count = #touched,
+			avg_distance = avg,
+			resolved = true,
+		}		
+	end
+	
+	return target
+
+end
+
+:: components/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE1OjUxOjM0Iixtb2RpZmllZD0iMjAyNS0w
+OS0yMCAyMToyMDo1MSJdXQ==
 :: gfx/
 :: gfx/0.gfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAxOToyNzoyNCIscmV2aXNpb249MTddXWx6NACsAwAAUT0AAPEoe1swXT17Ym1wPXB4dQBD
+OS0yMCAyMToxNjo0MyIscmV2aXNpb249MThdXWx6NACYBAAAqj4AAPEoe1swXT17Ym1wPXB4dQBD
 IBAQBPBWBxAHwBfQF8AHEAfwVixmbGFncz0wLHBhbl94PS0yLjM3NQ0A_gB5PS0xLjUsem9vbT04
 fSxGAP8pEL4wvxcg3QA9F00XTRc9Jw5NF-0BFy0XjQcCLQcCjR4tHv0QB00XfTctJ20HHk13Dv0B
 HgC9HgBvACX-G78XIN4A-gI3Ljf_BxcuF44HAi4HAo4fDi4d-hYXngc_p-4RHQC_HSC9EGIAJC-w
-8DkAXWGADlcwDqcDAKBHPhcwDhcuLxcOCAAhLSAHAB1QBgD-GjBHEEcgDkcADkcQDlcOVxAORx5H
-DhANDicOHQ4nDg0gDS4NEA0uDUAtBQGXL-DwEgIq4D4XThdOFz4nDw5OF-4BGQL_CwIHLgIHjh0u
-Hf4QB04XfjcuJ24HHU53Df4BIAIPggIqAmkAD4ICOg85AP9CDygCAQI9BADFAQ8oAkwGaQAPKAL-
-owLjAw8oAlAGaQAPKAI4BtIA-w5_Fx4njh8OHi3_ByceJ24XAgcOFwIHfi0eLf4Yl48C-0sPVgIA
-XxAtLi1_UAJLMxYvDmQAD0oCSATHAB8oQgIwDzkA--------LmMSpzAXAAcCAFIXIBcQNwgAFSAS
-ACMABwIAxCcQ1xAXEAcQByAnEBYAsEcQFwAnAAcQNyAHCAAiAEcIAI8gByDHIBfwDs8AJg85AP--
----------------88ExgIARg9ULQEwVWEw8W9isFXhMWoCUPEwMfG0YPEw8VDxv2KzUeE1ZgJQYv
-Ew8bJgUuDxUD9i4FEw0OVkAlJgUNAwYFAx4lDxP2LQwDDxsNHmYgJRYFHhMFDhMVFADxCRMFLnYQ
-JQYFHgYFLg0LBQYc9i4MAwV_JhQA8DETDgUeA-YyFS4FXhYAJRYFEx0TBQ4j9jAFLiUOJQ4mJQYM
-Ew0OBQ4TDgwT9jAFHgUOBhUeBQ4mJQwTDBUGDg0DTwDwBy8VDhUOExUOFSYlDAMFTgUDC-YyBQ4f
-AKETBQ5GJQwLFR4lFADwCh4WBQ4GAwYFRiUMEzUGDAMM9jIlDgYVE2ZnAPAJNgwD9jUVDhYMA2Yl
-FgwDJgwT9jYVJhNWHAD0ByYs9jsDC1YlFhz2QQNmJfZFDGYl9k0DACBMNQMA-xFLVfZKFQAl9kkV
-EDX2RyUQRfZFNSBF9kJFQPVKYPVIMJoBEx8z0wEmDzkA--------------------------------
------xRQbT04fX0=
+8DkAW18RBPD-AToACk8wLjg3PAACbxISBPD-NegAlAS8AeA_F04XThc_Jw8OThf_AcMB-gsCBy4C
+B44dLh3_EAdOF343LiduBx1Odw3_AcoBDywCKgJpAA8sApIP8AGxDykCOgLoAwDGAQ8pAkwGaQAP
+VQQ6DzkA-0IPKAIBAuQDDygCUAZpAA8oAjgG0gD-Dn4XHieOHw4eLf4HJx4nbhcCBw4XAgd_LR4t
+-hiXjwL-Sw9WAgBfEC0uLX5QAkszFi8OZAAPSgJIBMcAHyhCAjAPOQD--5ahEhIEgA8XV1AOpwMA
+oEc_F1AOFy4vDg4IACEtIAcADgMAYDBHMEcgDgMAMRAOVwMAIUcOBABSDQ4nDg0GAO8gDS4NMA0u
+DUAtUC3wD5wAJPECBnAPF1cgBhAOpzAGAA6nQAaiABQGogAiBgejACIHBpgAIQZABwAxAAYwCAAw
+EAYAqQASBqkAMQcGN6sANBcGF60AJxcGrgASBq4AnwAGMC2gBvACBk8BJVEOVlAOpgMAoEY_FlAO
+Fi4vFw4IACEtIAcADgMAYDBGMEYgDgMAMRAOVgMAIUYOBAAxDQ4moAAfJk4BNiAOVk0BEKZNATGm
+QAahAB8moAABISZACQAASQEACAAwEAYApAAfVqMACA9DAQIPBAMmDzkA--_aYxKnMBcABwIAUhcg
+FxA3CAAVIBIAIwAHAgDEJxDXEBcQBxAHICcQFgCwRxAXACcABxA3IAcIACIARwgAjyAHIMcgF-AO
+zwAmDzkA------------------zwTGAgBGD1QtATBVYTDxb2KwVeExagJQ8TAx8bRg8TDxUPG-Yr
+NR4TVmAlBi8TDxsmBS4PFQP2LgUTDQ5WQCUmBQ0DBgUDHiUPE-YtDAMPGw0eZiAlFgUeEwUOExUU
+APEJEwUudhAlBgUeBgUuDQsFBhz2LgwDBX4mFADwMRMOBR4D9jIVLgVeFgAlFgUTHRMFDiP2MAUu
+JQ4lDiYlBgwTDQ4FDhMODBP2MAUeBQ4GFR4FDiYlDBMMFQYODQNPAPAHLxUOFQ4TFQ4VJiUMAwVO
+BQML9jIFDh8AoRMFDkYlDAsVHiUUAPAKHhYFDgYDBgVGJQwTNQYMAwz2MiUOBhUTZmcA8Ak2DAP2
+NRUOFgwDZiUWDAMmDBP2NhUmE1YcAPQHJiz2OwMLViUWHPZBA2Yl9kUMZiX2TQMAIEw1AwD-EUtV
+9koVACX2SRUQNfZHJRBF9kU1IEX2QkVA9Upg9UgwmgETHzPTASYPOQD---------------------
+----------------FFBtPTh9fQ==
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMjozMzowOSJdXQ==
+OS0yMCAyMToyMDo1MSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -33,55 +299,207 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMjozMzowOSJdXQ==
+OS0yMCAyMToyMDo1MSJdXQ==
+:: phases/
+:: phases/ending.lua
+--[[pod_format="raw",created="2025-09-20 19:41:08",modified="2025-09-20 21:01:38",revision=2]]
+function new_ending_phase()
+	local phase = {
+		msg_index = 1,
+		messages = {}
+	}
+	
+	function phase:enter(game)
+		local is_untouched = game.overlap:get_pixel_count() == 0
+		local verdict = is_untouched and "nice" or "ew"
+		phase.messages = {
+			string.format("You took %.2f seconds", game.timer.time_elapsed),
+			string.format("And touched %f px of him...", game.overlap.touched_px_count),
+			verdict
+		}
+	end
+	
+	function phase:update(game)
+		if btnp() ~= 0 then
+			if phase.msg_index < #phase.messages then
+				phase.msg_index += 1
+			else
+				game:set_phase(phases.scoreboard)
+			end
+		end
+	end
+	
+	function phase:draw(game)
+		cls()
+		draw_music_button(game)
+		draw_objects(game)
+		color_overlap(game.overlap:get_pixels())
+		draw_text_box(phase.messages[phase.msg_index])
+	end
+	
+	return phase
+end
+:: phases/exit_game.lua
+--[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-20 19:41:41",revision=154]]
+function new_exit_game_phase()
+	phase = {}
+	
+	function phase:update(game)
+		if time() - game.time_exited > .75 then
+			exit()
+		end
+	end
+	
+	function phase:draw(game)
+		cls()
+		print("Exiting...", 0, 0, colors.WHITE)
+	end
+
+	return phase
+end
+:: phases/gameplay.lua
+--[[pod_format="raw",created="2025-09-20 19:40:55",modified="2025-09-20 21:01:13",revision=4]]
+function new_gameplay_phase()
+	local phase = {}
+	
+	function phase:enter(game)
+		game:reset_round()
+		game.timer:start_timer()
+	end
+	
+	function phase:update(game)
+		handle_input(game)
+		if not game.capture_zone.is_size_locked() then
+			game.target:grow(0.1)
+		else
+			if not game.overlap:is_resolved() then
+				local overlap_computation_results = game.target:compute_overlap(game.capture_zone)
+				game.overlap:apply(overlap_computation_results)
+				game.capture_zone:set_color(colors.GREEN)
+			end
+			game:set_phase(phases.ending)
+		end
+	end
+
+	function phase:draw(game)
+		cls()
+		draw_music_button(game)
+		draw_objects(game)
+		if game.overlap:is_resolved() then
+			color_overlap(game.overlap:get_pixels())
+		end
+	end
+	
+	return phase
+end
+:: phases/instructions.lua
+--[[pod_format="raw",created="2025-09-20 19:40:36",modified="2025-09-20 21:02:01",revision=11]]
+function new_instructions_phase()
+	local phase = {
+		instruction_index = 1
+	}
+	
+	function phase:enter(game)
+		phase.instruction_index = 1
+	end
+	
+	function phase:update(game)
+		if btnp() ~= 0 then
+			if phase.instruction_index < #instructions_text then
+				phase.instruction_index += 1
+			else
+				game:set_phase(phases.gameplay)
+			end
+		end
+	end
+	
+	function phase:draw(game)
+		cls()
+		draw_music_button(game)
+		draw_text_box(instructions_text[phase.instruction_index])
+	end
+	
+	return phase
+end
+:: phases/scoreboard.lua
+--[[pod_format="raw",created="2025-09-20 19:41:25",modified="2025-09-20 21:01:54",revision=4]]
+function new_scoreboard_phase()
+	local phase = {
+		x = 24,
+		y = 36,
+	}
+	
+	function phase:draw(game)
+		cls()
+		draw_music_button(game)
+		print(string.format("Time: %.2f sec", game.timer.time_elapsed), 
+			phase.x, phase.y, colors.WHITE)
+		print("Overlap: "..game.overlap:get_pixel_count().." px", 
+			phase.x, phase.y + 12, colors.WHITE)
+		print(string.format("Avg dist: %.2f px", game.overlap.avg_distance), 
+			phase.x, phase.y + 24, colors.WHITE)
+		print("Play again? (y/n)",
+			phase.x, phase.y + 40, colors.WHITE)
+	end
+	
+	function phase:update(game)
+		if keyp("n") then
+			game.time_exited = time()
+			game:set_phase(phases.exit_game)
+		elseif keyp("y") then
+			game:set_phase(phases.instructions)
+		end
+	end
+	
+	return phase
+end
+
+:: phases/.info.pod
+b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE5OjQyOjA1Iixtb2RpZmllZD0iMjAyNS0w
+OS0yMCAyMToyMDo1MSJdXQ==
 :: sfx/
 :: sfx/1.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAxOToxMTowOCIscmV2aXNpb249M11dbHo0APoCAABJDAAA-zdweHUAAygAAAQABA9AEAIO
-AAGgASACoA4ADxAADfDKAQIDBAUGAAIPf5ACAwYHMAIDkAgJCgtADw_QDwwPDQ8ODw9ADPD-AQDr
-8EKqARAGDygQASABIAHwAAIQAg8gEAEgDyUAD5YAATAPQZABChAED84PZhAPwiAPRSAPNgAPYPCl
-Dxzwxw-4Cg--D4AP9w8NAXAPaw9pD2MPa8BQABQnUAAkDxJRAPoZISABMA_fkAEIEAQPMA_bEAfw
-pwFgDyEQDx8KDy8KBQ8VBQAKEAXwuVUAoHMPbg9hD3IPZbBXAB8lVwACQiAND-9YAPoEGA9OAAQP
-Qg_l8K4PDQAE8MMBAE8AkWgPaQ9oD2EPdE8AFhn2AGIGDyAPFxFPAGEED8wPvYBRAPwDUw__AUAK
-8KsPfAAN8AUPGvCvnwDgeQ9uD3QPaA9iD2EPc4BWAB0dTAH6GCEgAQ-_EAQPVg8xgA8RAhAED0AP
-KEACIAEEEAQPIPCjDygPngLwxVsAMGYPbVUAMB9zoFUAGCOrADAkDxyrAPoeDwwPJwABD-0QBA9Z
-DzqADyECIA9AUAIPEhABAyAH8KIIDxgP3wqwAaAPKPCsXQBxcA9pD3APZawBFyCwABUOqgGYQPDD
-DygP--DGOQBv8AkBEAYOMAD-----nB--AQCs_wDID0AADQ5ADycPFw8dDxcIABMnCgAf-yAAAAQO
-APAFJw8X--8Q8AAJ4PkQ-gAJ7vkQ8HBVAHFADydZHyhpBgDyBfkXAlkSaQJZEvkXDlkeaQ5ZHvkX
-JgDzEg4BEBkfJxkbGQ87CQxJHygZFRkPPQkE_RUTGRMZAwkDSQgAo-kVHhkeGQ4JDkkIACT5FEEA
-8BcgCTsZC4k1GQU5Dz8JB-kSPwQZCIk4GQg5CAkI_RI_GQ6JPhkOOTMAEhEzAPQCQAl-G3l-HPkY
-eHl4_Rh_eX6NAKBACR86DBYMJmkWBgDT_RePBWmK_ReOaY75FiEAX-mw8HACCAAzH-8BAP-WUP--
----d
+OS0yMCAxNDo1MzoxOSIscmV2aXNpb249NF1dbHo0APUCAAApDAAA-zZweHUAAygAAAQABA9AEAIO
+AAGgASACoA4ADxAADfDKAQIDBAUJAAIPf5ACAwYHMAIDoAkKC0APD5APDA8NDw4PD0AM8P8BAOvw
+QqoBEAYPKBABIAEgAfAAAhACDyAQASAPJQAPlgABMA9BkAEKEAQPzg9mEA-CIA9FIA82AA9g8KUP
+HPDHD-gKD-8PgA-3Dw0BcA9rD2kPYw9rwFAAFCdQACQPElEA_hohIAEwD5_QAQ8IEAQPMA_bEAfw
+pwFgDyEQDx8KDy8KBQ8VBQAKEAXwuVYAoHMPbg9hD3IPZbBYAB8lWAACQyAND-9ZAPoEGA9OAAQP
+Qg_l8K4PDQAE8MMBAFAAkWgPaQ9oD2EPdFAAFhn4AGIGDyAPFxFQAGIED8wPvYBSAPwDUw__AUAK
+8KsPfAAN8AUPGvCvoQDgeQ9uD3QPaA9iD2EPc4BXAB0dTwH6FyEgAQ-_EAQPVg8xgA8RAhAEDg8o
+QAIgAQQQBA8g8KMPKA_eAvDFWgAwZg9tVAAwH3OgVAAYI6sAMCQPHKsA_h4PDA8nAAEP-RAED1kP
+OoAPIQIgDlACDxIQAQMgB-CiDwgPGA-fCrABoA8o8KxdAHFwD2kPcA9lrgEXIK8AEwiuAKgwDvDD
+DygP--DGOABv8AkBEAYILwD-----gx--AQCs68gOAA0IQA8nDxcPHQ8XCAATJwoAH-8gAAAEDgDx
+DycPF---EPAACeD5EPgACej5EPBwDgANQA8nWR8oaQYA8QX5FwJZEmkCWRL5FwhZGGkIWRj5FyUA
+8xIIARAZHycZGxkPOwkMSR8oGRUZDz0JBPkVExkTGQMJA0kIAKP5FRgZGBkICQhJCAAj_RRAAPAX
+IAk7GQuJNRkFOQ8-CQf5Ej8EGQaJNhkGOQYJBvkSOBkIiTgZCDkyABERMgDzAkAJfxt5fxz5GHZ5
+dvkYeHl4igCgQAkfOgwaDCppGgYA0vkXjwVpgvkXiGmI_RYgAC-5sAgANh--AQD-1lD-----3Q==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMjozMzowOSJdXQ==
+OS0yMCAyMToyMDo1MSJdXQ==
 :: button_actions.lua
---[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-19 20:34:07",revision=29]]
+--[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-20 18:23:20",revision=41]]
 function handle_input(game)
-	-- keyboard actions --
 	if (btn(2)) up_action(game)
 	if (btn(3)) down_action(game)
 	if (key("space")) spacebar_action(game)
 end
 
 function up_action(game)
-	if not game.is_space_clicked then
-		game.radius += 1
-	end
+	game.capture_zone:grow(1)
 end
 
 function down_action(game)
-	if not game.is_space_clicked then
-		game.radius -= 1
-		game.radius = max(1, game.radius - 1)
-	end
+	game.capture_zone:shrink(1)
 end
 
 function spacebar_action(game)
-	if not game.is_space_clicked then
-		game.is_space_clicked = true
-		game.time_elapsed = time() - game.time0
+	if game.capture_zone.is_size_locked() then
+		return
 	end
+	game.capture_zone.lock_size()
+	game.target.lock_size()
+	game.timer:stop_timer()
 end
 :: config.lua
 --[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-19 19:31:19",revision=59]]
@@ -131,17 +549,31 @@ function stop_music()
 	music(-1, nil, nil, 0x80000)
 end
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-19 20:54:15",revision=205]]
-function draw_objects(game) 
-	-- Draw circle
-	circ(game.center.x, game.center.y, game.radius, game.circle_color)
-	-- Draw sprite
-	sspr(1, 0, 0, 16, 16, 
-			game.sprite_corner.x, game.sprite_corner.y, game.dim, game.dim)
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-20 21:18:06",revision=219]]
+function draw_objects(game)
+	local zone, target = game.capture_zone, game.target
+	
+	local center, radius = zone:get_center(), zone:get_radius()
+	circ(center.x, center.y, radius, zone:get_color())
+	
+	local corner, dimension = target:get_corner(), target:get_dimension()
+	sspr(1, 0, 0, 16, 16, corner.x, corner.y, dimension, dimension)
 end
 
 function draw_music_button(game)
-	sspr(5, 0, 0, 16, 16, 2, 2, 12, 12)
+	sspr(48, 0, 0, 16, 16, 2, 2, 12, 12)
+end
+
+function draw_music_button_off(game)
+	sspr(49, 0, 0, 16, 16, 2, 2, 12, 12)
+end
+
+function draw_music_button_hover_on(game)
+	sspr(50, 0, 0, 16, 16, 2, 2, 12, 12)
+end
+
+function draw_music_button_hover_off(game)
+	sspr(51, 0, 0, 16, 16, 2, 2, 12, 12)
 end
 
 function color_overlap(pixels)
@@ -194,26 +626,28 @@ function draw_text_box(text)
 	end
 end
 :: game_state.lua
---[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-19 21:39:42",revision=77]]
+--[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-20 20:38:09",revision=108]]
+include "components/target.lua"
+include "components/capture_zone.lua"
+include "components/round_timer.lua"
+include "components/overlap_report.lua"
+include "phase_manager.lua"
+
 function new_game_state()
 	local Game = {
-		dim = 8, -- width and height of sprite
-		center = { -- coordinates for the center of the circle, given window center
-			x = center.x,
-			y = center.y },
-		is_space_clicked = false,
-		time0 = 0,
-		time_elapsed = 0,
+		target = new_target(center),
+		capture_zone = new_capture_zone(center),
+		timer = new_timer(),
+		overlap = new_overlap_report(),
+		music_controller = new_music_controller(),
+		phase_manager = new_phase_manager({
+			[phases.instructions] = new_instructions_phase(),
+			[phases.gameplay] = new_gameplay_phase(),
+			[phases.ending] = new_ending_phase(),
+			[phases.scoreboard] = new_scoreboard_phase(),
+			[phases.exit_game] = new_exit_game_phase(),
+		}),
 		time_exited = 0,
-		circle_color = colors.WHITE,
-		instruction_index = 1,
-		ending_msg_index = 1,
-		overlap = {
-			touched_pixels = {},
-			touched_px_count = 0,
-			avg_distance = 0,
-			resolved = false,
-		},
 		mouse_info = {
 			x = 0, y = 0, left_click = false, left_click_pressed = false},
 		show_mouse_overlay = false, 
@@ -221,42 +655,38 @@ function new_game_state()
 	}
 	
 	function Game:reset_round()
-		Game.dim = 8
-		Game.radius = Game.dim/2 - 1 -- set circle radius based on initial sprite size
-		Game.is_space_clicked = false
-		Game.time_elapsed = 0
-		Game.circle_color = colors.WHITE
+		Game.target:reset_target()
+		Game.capture_zone:reset_zone()
+		Game.timer:reset_timer()
+		Game.overlap:reset_overlap()
+
 		Game.ending_msg_index = 1
-		Game.sprite_corner = get_sprite_corner_coords(Game)
-		Game.overlap = {
-			touched_pixels = {},
-			touched_px_count = 0,
-			avg_distance = 0,
-			resolved = false,
-		}
 	end
 		
 	function Game:set_phase(id)
-		local handler = phase_handlers[id]
-		assert(handler, "unknown phase "..tostr(id))
-		Game.phase_id = id
-		Game.phase = handler
-		if Game.phase.enter then
-			Game.phase.enter(Game)
-		end
+		Game.phase_manager:transition_phases(id, Game)
+	end
+	
+	function Game:update()
+		Game.phase_manager:update(Game)
+	end
+	
+	function Game:draw()
+		Game.phase_manager:draw(Game)
 	end
 	
 	Game:reset_round()
 	return Game
 end
 :: geometry.lua
---[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-02 23:39:28",revision=29]]
-function get_bounding_box_coords(center, radius)
-	local x0 = center.x - radius
-	local y0 = center.y - radius
-	local x1 = center.x + radius
-	local y1 = center.y + radius
-	return x0, y0, x1, y1
+--[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-20 16:26:28",revision=32]]
+function get_bb_from_tl_corner(top_left_corner, dim)
+	return {
+		x0 = top_left_corner.x,
+		y0 = top_left_corner.y,
+		x1 = top_left_corner.x + dim - 1,
+		y1 = top_left_corner.y + dim - 1
+	}
 end
 
 function get_bounding_box(center, radius)
@@ -265,23 +695,6 @@ function get_bounding_box(center, radius)
 		y0 = center.y - radius,
 		x1 = center.x + radius,
 		y1 = center.y + radius,
-	}
-end
-
-function get_bb_coords_from_tl_corner(top_left_corner, dim)
-	local x0 = top_left_corner.x
-	local y0 = top_left_corner.y
-	local x1 = x0 + dim - 1
-	local y1 = y0 + dim - 1
-	return x0, y0, x1, y1
-end
-
-function get_bb_from_tl_corner(top_left_corner, dim)
-	return {
-		x0 = top_left_corner.x,
-		y0 = top_left_corner.y,
-		x1 = top_left_corner.x + dim - 1,
-		y1 = top_left_corner.y + dim - 1
 	}
 end
 
@@ -307,55 +720,7 @@ function distance_to_box(x, y, box)
 	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
 end
 :: helpers.lua
---[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-19 22:31:14",revision=77]]
-function update_sprite_coords(game)
-	game.sprite_corner = get_sprite_corner_coords(game)
-end
-
-function get_sprite_corner_coords(game)
-	local sprite_corner =
-	 	{ x = game.center.x - game.dim/2 + 1, 
-		  y = game.center.y - game.dim/2 + 1 } -- coords of top left sprite corner
-	return sprite_corner
-end
-
-function compute_sprite_overlap(game)
-	local touched, sum, n = {}, 0, 0
-	
-	-- sprite bounds (inclusive)
-	local sprite_box = get_bb_from_tl_corner(game.sprite_corner, game.dim)
-	-- circle bounding box
-	local circle_box = get_bounding_box(game.center, game.radius)
-	
-	for y = circle_box.y0, circle_box.y1 do -- go through y points of filled circle
-		local dy = y - game.center.y
-		for x = circle_box.x0, circle_box.x1 do -- go through x points of filled circle
-			local dx = x - game.center.x
-			-- only handle if x, y is on circle border
-			if is_hypotenuse_within_px_of_radius(dx, dy, game.radius, 1) then
-				-- only color the pixels within the sprite bounds red
-				if is_point_within_box(x, y, sprite_box) then
-					add(touched, { x = x, y = y})
-				end
-				-- only count points on the circle border outside sprite's box toward
-				--	 avg distance calculation 
-				if is_point_outside_box(x, y, sprite_box) then
-					-- calculate distance from closest sprite point to x,y
-					sum += distance_to_box(x, y, sprite_box)
-					n += 1
-				end
-			end
-		end
-	end
-	local avg = n > 0 and  sum / n or 0
-	return {
-		touched_pixels = touched,
-		touched_px_count = #touched,
-		avg_distance = avg,
-		resolved = true,
-	}		
-end
-
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-20 19:12:14",revision=84]]
 function measure_w_h(s)
 	clip(0, 0, 0, 0)
 	local w, h = print(s, 0, 0)
@@ -375,6 +740,13 @@ function get_mouse_info(game)
 	}
 end
 
+function handle_music_toggle(game)
+	if is_mouse_on_music_button(game)
+		and game.mouse_info.left_click_pressed then
+			game.music_controller:toggle_music()
+	end
+end
+
 function is_mouse_on_button(mx, my, button_tl_corner, bw, bh)
 	local x, y = button_tl_corner.x, button_tl_corner.y
    return mx >= x and mx <= x + bw 
@@ -385,190 +757,85 @@ function is_mouse_on_music_button(game)
 	return is_mouse_on_button(game.mouse_info.x, game.mouse_info.y,
 		{x = 2, y = 2}, 12, 12)
 end
-
-music_table = {
-	init_music =
-		function(game)
-			fetch("sfx/1.sfx"):poke(0x80000) -- load 256k into 0x80000..0xbffff
-			if game.music_on then
-				music(1, nil, nil, 0x80000) -- play music using 0x80000 as the audio base address
-			end
-		end,
-	toggle_music =
-		function(game)
-			if is_mouse_on_music_button(game)
-				and game.mouse_info.left_click_pressed then
-					game.music_on = not game.music_on
-			end
-			if game.music_on and stat(466) == -1 then
-				music(1, nil, nil, 0x80000)
-			elseif not game.music_on and stat(466) ~= -1 then
-				music(-1)
-			end
-		end
-}
 :: main.lua
---[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-19 22:30:54",revision=673]]
+--[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-20 21:01:16",revision=684]]
 include "config.lua"
 include "button_actions.lua"
 include "drawing.lua"
 include "geometry.lua"
 include "helpers.lua"
-include "phase_transitions.lua"
+include "phase_manager.lua"
 include "game_state.lua"
+include "components/music_controller.lua"
 
 local game
 
 function _init()
 	game = new_game_state()
 	window_table.make_window()
-	music_table.init_music(game)
+	game.music_controller:play_music()
 	game:set_phase(phases.instructions)
 end
 
 function _update()
-	local phase = game.phase
 	get_mouse_info(game)
-	music_table.toggle_music(game)
-	if phase and phase.update then
-		phase.update(game)
-	end
+	handle_music_toggle(game)
+	game:update()
 end
 
 function _draw()
-	local phase = game.phase
-	if phase and phase.draw then
-		phase.draw(game)
-	end
-	draw_music_button(game)
+	game:draw()
 end
 
 
-:: phase_transitions.lua
---[[pod_format="raw",created="2025-09-15 21:52:38",modified="2025-09-19 19:13:44",revision=116]]
-phase_handlers = {
-	instructions = {
-		enter = 
-			function(game)
-				game.instruction_index = 1
-			end,
-		update =
-			function(game)
-				if btnp() ~= 0 then
-					if game.instruction_index < #instructions_text then
-						game.instruction_index += 1
-					else
-						game:set_phase(phases.gameplay)
-					end
-				end
-			end, 
-		draw = 
-			function(game)
-				cls()
-				draw_text_box(instructions_text[game.instruction_index])
-			end,
-	},
-	gameplay = {
-		enter = 
-			function(game)
-				game:reset_round()
-				game.time0 = time()
-			end,
-		update =
-			function(game)
-				handle_input(game)
-				update_sprite_coords(game)
-				
-				if not game.is_space_clicked then
-					game.dim += 0.1
-					update_sprite_coords(game)
-				else
-					if not game.overlap.resolved then
-						local overlap = compute_sprite_overlap(game)
-						game.overlap = overlap
-						game.circle_color = colors.GREEN
-					end
-					game:set_phase(phases.ending)
-				end
-			end, 
-		draw = 
-			function(game)
-				cls()
-				draw_objects(game)
-				if game.overlap.resolved then
-					color_overlap(game.overlap.touched_pixels)
-				end
-			end,
-	},
-	ending = {
-		enter =
-			function(game)
-				local verdict = game.overlap.touched_px_count == 0 and "nice" or "ew"
-				end_msgs = {
-					string.format("You took %.2f seconds", game.time_elapsed),
-					string.format("And touched %f px of him...", game.overlap.touched_px_count),
-					verdict
-				}
-			end,
-		update =
-			function(game)
-				if btnp() ~= 0 then
-					if game.ending_msg_index < #end_msgs then
-						game.ending_msg_index += 1
-					else
-						game:set_phase(phases.scoreboard)
-					end
-				end
-			end, 
-		draw =
-			function(game)
-				cls()
-				draw_objects(game)
-				color_overlap(game.overlap.touched_pixels)
-				draw_text_box(end_msgs[game.ending_msg_index])
-			end,
-	},
-	scoreboard = {
-		draw =
-			function(game)
-				cls()
-				y = 36
-				print(string.format("Time: %.2f sec", game.time_elapsed), 24, y, colors.WHITE)
-				print("Overlap: "..game.overlap.touched_px_count.." px", 24, y + 12, colors.WHITE)
-				print(string.format("Avg dist: %.2f px", game.overlap.avg_distance), 24, y + 24, colors.WHITE)
-				print("Play again? (y/n)", 24, y + 40, colors.WHITE)
-			end,
-		update =
-			function(game)
-				if keyp("n") then
-					game.time_exited = time()
-					game:set_phase(phases.exit_game)
-				elseif keyp("y") then
-					game:set_phase(phases.instructions)
-				end
-			end,
-	},
-	exit_game = {
-		update = 
-			function(game)
-				if time() - game.time_exited > .75 then
-					exit()
-				end
-			end,
-		draw = 
-			function(game)
-				cls()
-				print("Exiting...", 0, 0, colors.WHITE)
-			end
-	},
-}
+:: phase_manager.lua
+--[[pod_format="raw",created="2025-09-20 19:47:38",modified="2025-09-20 20:52:45",revision=9]]
+include "phases/instructions.lua"
+include "phases/gameplay.lua"
+include "phases/ending.lua"
+include "phases/scoreboard.lua"
+include "phases/exit_game.lua"
+
+function new_phase_manager(registry)
+	local manager = {
+		registry = registry,
+		current_phase_id = nil,
+		current_phase = nil
+	}
+	
+	function manager:transition_phases(id, game)
+		local phase = registry[id]
+		assert(phase, "unknown phase "..tostr(id))
+		manager.current_phase_id = id
+		manager.current_phase = phase
+		if phase.enter then
+			phase:enter(game)
+		end
+	end
+	
+	function manager:update(game)
+		if manager.current_phase and manager.current_phase.update then
+			manager.current_phase:update(game)
+		end
+	end
+	
+	function manager:draw(game)
+		if manager.current_phase and manager.current_phase.draw then
+			manager.current_phase:draw(game)
+		end
+	end
+
+	return manager
+end
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0xOSAyMjozMzowOSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzIxIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJoZWxwZXJzLmx1YSM4NiIsd29ya3Nw
-YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2FtZV9zdGF0ZS5sdWEjNCIsd29ya3NwYWNlX2luZGV4
-PTF9LHtsb2NhdGlvbj0iZHJhd2luZy5sdWEjNyIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlv
-bj0iZ2Z4LzAuZ2Z4Iix3b3Jrc3BhY2VfaW5kZXg9Mn0se2xvY2F0aW9uPSJtYXAvMC5tYXAiLHdv
-cmtzcGFjZV9pbmRleD0zfSx7bG9jYXRpb249InNmeC8xLnNmeCIsd29ya3NwYWNlX2luZGV4PTR9
-fV1d
+OS0yMCAyMToyMDo1MSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3aW5nLmx1YSMyNyIsd29ya3Nw
+YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0icGhhc2VzL2luc3RydWN0aW9ucy5sdWEiLHdvcmtzcGFj
+ZV9pbmRleD0xfSx7bG9jYXRpb249InBoYXNlcy9nYW1lcGxheS5sdWEiLHdvcmtzcGFjZV9pbmRl
+eD0xfSx7bG9jYXRpb249InBoYXNlcy9lbmRpbmcubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xv
+Y2F0aW9uPSJwaGFzZXMvc2NvcmVib2FyZC5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
+b249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3
+b3Jrc3BhY2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFjZV9pbmRleD00
+fX1dXQ==
 :: [eoc]
