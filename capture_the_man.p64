@@ -64,7 +64,7 @@ function new_capture_zone(center)
 	return capture_zone
 end
 :: components/music_controller.lua
---[[pod_format="raw",created="2025-09-20 18:52:10",modified="2025-09-20 19:15:23",revision=5]]
+--[[pod_format="raw",created="2025-09-20 18:52:10",modified="2025-09-21 06:44:10",revision=7]]
 function new_music_controller()
 	local controller = {
 		channel = 1,
@@ -262,35 +262,33 @@ end
 
 :: components/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE1OjUxOjM0Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToyMDo1MSJdXQ==
+OS0yMSAxNjowNjoxNCJdXQ==
 :: gfx/
 :: gfx/0.gfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToxNjo0MyIscmV2aXNpb249MThdXWx6NACYBAAAqj4AAPEoe1swXT17Ym1wPXB4dQBD
-IBAQBPBWBxAHwBfQF8AHEAfwVixmbGFncz0wLHBhbl94PS0yLjM3NQ0A_gB5PS0xLjUsem9vbT04
-fSxGAP8pEL4wvxcg3QA9F00XTRc9Jw5NF-0BFy0XjQcCLQcCjR4tHv0QB00XfTctJ20HHk13Dv0B
-HgC9HgBvACX-G78XIN4A-gI3Ljf_BxcuF44HAi4HAo4fDi4d-hYXngc_p-4RHQC_HSC9EGIAJC-w
-8DkAW18RBPD-AToACk8wLjg3PAACbxISBPD-NegAlAS8AeA_F04XThc_Jw8OThf_AcMB-gsCBy4C
-B44dLh3_EAdOF343LiduBx1Odw3_AcoBDywCKgJpAA8sApIP8AGxDykCOgLoAwDGAQ8pAkwGaQAP
-VQQ6DzkA-0IPKAIBAuQDDygCUAZpAA8oAjgG0gD-Dn4XHieOHw4eLf4HJx4nbhcCBw4XAgd_LR4t
--hiXjwL-Sw9WAgBfEC0uLX5QAkszFi8OZAAPSgJIBMcAHyhCAjAPOQD--5ahEhIEgA8XV1AOpwMA
-oEc_F1AOFy4vDg4IACEtIAcADgMAYDBHMEcgDgMAMRAOVwMAIUcOBABSDQ4nDg0GAO8gDS4NMA0u
-DUAtUC3wD5wAJPECBnAPF1cgBhAOpzAGAA6nQAaiABQGogAiBgejACIHBpgAIQZABwAxAAYwCAAw
-EAYAqQASBqkAMQcGN6sANBcGF60AJxcGrgASBq4AnwAGMC2gBvACBk8BJVEOVlAOpgMAoEY_FlAO
-Fi4vFw4IACEtIAcADgMAYDBGMEYgDgMAMRAOVgMAIUYOBAAxDQ4moAAfJk4BNiAOVk0BEKZNATGm
-QAahAB8moAABISZACQAASQEACAAwEAYApAAfVqMACA9DAQIPBAMmDzkA--_aYxKnMBcABwIAUhcg
-FxA3CAAVIBIAIwAHAgDEJxDXEBcQBxAHICcQFgCwRxAXACcABxA3IAcIACIARwgAjyAHIMcgF-AO
-zwAmDzkA------------------zwTGAgBGD1QtATBVYTDxb2KwVeExagJQ8TAx8bRg8TDxUPG-Yr
-NR4TVmAlBi8TDxsmBS4PFQP2LgUTDQ5WQCUmBQ0DBgUDHiUPE-YtDAMPGw0eZiAlFgUeEwUOExUU
-APEJEwUudhAlBgUeBgUuDQsFBhz2LgwDBX4mFADwMRMOBR4D9jIVLgVeFgAlFgUTHRMFDiP2MAUu
-JQ4lDiYlBgwTDQ4FDhMODBP2MAUeBQ4GFR4FDiYlDBMMFQYODQNPAPAHLxUOFQ4TFQ4VJiUMAwVO
-BQML9jIFDh8AoRMFDkYlDAsVHiUUAPAKHhYFDgYDBgVGJQwTNQYMAwz2MiUOBhUTZmcA8Ak2DAP2
-NRUOFgwDZiUWDAMmDBP2NhUmE1YcAPQHJiz2OwMLViUWHPZBA2Yl9kUMZiX2TQMAIEw1AwD-EUtV
-9koVACX2SRUQNfZHJRBF9kU1IEX2QkVA9Upg9UgwmgETHzPTASYPOQD---------------------
-----------------FFBtPTh9fQ==
+OS0yMSAwMTozMTo0MyIscmV2aXNpb249MjVdXWx6NAAfBAAAkD4AAPFSe1swXT17Ym1wPXB4dQBD
+IBAQBBC-FyDeAD4XThdOFz4nDw5OF-4BFy4XjgcCLgcCjh0uHf4QB04XfjcuJ24HHU53Df4BHQC_
+HSC9ECxmbGFncz0wLHBhbl94PS0yLjM3NQ0A-wB5PS0xLjUsem9vbT03fSxwAAF2-gI3Ljf_B2kA
+3x8OLh3_FheeBz6n-hFiADEO0gBfAgcuAgfSAFECaQAP0gBMAjcBAG8AD9IATAZpAA-SAEwCNwEP
+0gBQBmkAD9IAS18QLS4tfswASzMWLw5kAA-GAD3-Dn4XHieOHw4eLf4HJx4nbhcCBw4XAgd_LR4t
+-hiXZwBCBC4BHyhfAC4v8PA5AP---------zoRISBIAPF1dQDqcDAKBHPhdQDhcuLw4OCAAhLSAH
+AA4DAGAwRzBHIA4DADEQDlcDACFHDgQAUg0OJw4NBgDvIA0uDTANLg1ALVAt8A_cABMcOJwA8AIG
+cA8XVxAWEA6nIBYADqcwFqIAI0AWogAiFgeiABEWlgAwBxZABwAxFxYwBwCCABYARzBHEBamACEW
+N6cANAcWF6kAJgcWqgAiHhaqAI8WMC2QFvABFq4AJGGADlZQDqYDAJBGPhZQDhYuLxedADEWLSAH
+AA4DAGAwRjBGIA4DADEQDlYDACFGDgQAMQ0OJp8AHyZJATYgDlZIARCmSAEwpjAWoQAiQDagABgm
+nwAgJkAGACA2MAYAnxYAFgBGMEYQZqAACA8-ATUOwgIPOQD--41jEqcwFwAHAgBSFyAXEDcIABUg
+EgAjAAcCAMQnENcQFxAHEAcgJxAWALBHEBcAJwAHEDcgBwgAIgBHCACPIAcgxyAX8A7PACYPOQD-
+-----------------PBMYCAEYPVC0BMFVhMPFvYrBV4TFqAlDxMDHxtGDxMPFQ8b9is1HhNWYCUG
+LxMPGyYFLg8VA-YuBRMNDlZAJSYFDQMGBQMeJQ8T9i0MAw8bDR5mICUWBR4TBQ4TFRQA8QkTBS52
+ECUGBR4GBS4NCwUGHPYuDAMFfiYUAPAxEw4FHgP2MhUuBV4WACUWBRMdEwUOI-YwBS4lDiUOJiUG
+DBMNDgUOEw4ME-YwBR4FDgYVHgUOJiUMEwwVBg4NA08A8AcvFQ4VDhMVDhUmJQwDBU4FAwv2MgUO
+HwChEwUORiUMCxUeJRQA8AoeFgUOBgMGBUYlDBM1BgwDDPYyJQ4GFRNmZwDwCTYMA-Y1FQ4WDANm
+JRYMAyYME-Y2FSYTVhwA9AcmLPY7AwtWJRYc9kEDZiX2RQxmJfZNAwAgTDUDAP8RS1X2ShUAJfZJ
+FRA19kclEEX2RTUgRfZCRUD1SmD1SDCaARMfM9MBJg85AP------------------------------
+------8UUG09OH19
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToyMDo1MSJdXQ==
+OS0yMSAxNjowNjoxNCJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -299,10 +297,10 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToyMDo1MSJdXQ==
+OS0yMSAxNjowNjoxNCJdXQ==
 :: phases/
 :: phases/ending.lua
---[[pod_format="raw",created="2025-09-20 19:41:08",modified="2025-09-20 21:01:38",revision=2]]
+--[[pod_format="raw",created="2025-09-20 19:41:08",modified="2025-09-21 06:31:37",revision=5]]
 function new_ending_phase()
 	local phase = {
 		msg_index = 1,
@@ -317,9 +315,11 @@ function new_ending_phase()
 			string.format("And touched %f px of him...", game.overlap.touched_px_count),
 			verdict
 		}
+		game.face_manager:set_phase("angry_only")
 	end
 	
 	function phase:update(game)
+		game.face_manager:update()
 		if btnp() ~= 0 then
 			if phase.msg_index < #phase.messages then
 				phase.msg_index += 1
@@ -332,7 +332,8 @@ function new_ending_phase()
 	function phase:draw(game)
 		cls()
 		draw_music_button(game)
-		draw_objects(game)
+		face_sheet = game.face_manager:resolve_face_sheet()
+		draw_objects(face_sheet, game)
 		color_overlap(game.overlap:get_pixels())
 		draw_text_box(phase.messages[phase.msg_index])
 	end
@@ -358,16 +359,18 @@ function new_exit_game_phase()
 	return phase
 end
 :: phases/gameplay.lua
---[[pod_format="raw",created="2025-09-20 19:40:55",modified="2025-09-20 21:01:13",revision=4]]
+--[[pod_format="raw",created="2025-09-20 19:40:55",modified="2025-09-21 07:01:31",revision=13]]
 function new_gameplay_phase()
 	local phase = {}
 	
 	function phase:enter(game)
 		game:reset_round()
 		game.timer:start_timer()
+		game.face_manager:set_phase("gameplay")
 	end
 	
 	function phase:update(game)
+		game.face_manager:update()
 		handle_input(game)
 		if not game.capture_zone.is_size_locked() then
 			game.target:grow(0.1)
@@ -384,7 +387,8 @@ function new_gameplay_phase()
 	function phase:draw(game)
 		cls()
 		draw_music_button(game)
-		draw_objects(game)
+		face_sheet = game.face_manager:resolve_face_sheet()
+		draw_objects(face_sheet, game)
 		if game.overlap:is_resolved() then
 			color_overlap(game.overlap:get_pixels())
 		end
@@ -393,14 +397,18 @@ function new_gameplay_phase()
 	return phase
 end
 :: phases/instructions.lua
---[[pod_format="raw",created="2025-09-20 19:40:36",modified="2025-09-20 21:02:01",revision=11]]
+--[[pod_format="raw",created="2025-09-20 19:40:36",modified="2025-09-21 16:05:43",revision=13]]
 function new_instructions_phase()
 	local phase = {
 		instruction_index = 1
 	}
 	
 	function phase:enter(game)
-		phase.instruction_index = 1
+		if game.restarted_from_scoreboard then
+			phase.instruction_index = 8
+		else
+			phase.instruction_index = 1
+		end
 	end
 	
 	function phase:update(game)
@@ -422,7 +430,7 @@ function new_instructions_phase()
 	return phase
 end
 :: phases/scoreboard.lua
---[[pod_format="raw",created="2025-09-20 19:41:25",modified="2025-09-20 21:01:54",revision=4]]
+--[[pod_format="raw",created="2025-09-20 19:41:25",modified="2025-09-21 16:03:01",revision=6]]
 function new_scoreboard_phase()
 	local phase = {
 		x = 24,
@@ -447,6 +455,7 @@ function new_scoreboard_phase()
 			game.time_exited = time()
 			game:set_phase(phases.exit_game)
 		elseif keyp("y") then
+			game.restarted_from_scoreboard = true
 			game:set_phase(phases.instructions)
 		end
 	end
@@ -456,7 +465,7 @@ end
 
 :: phases/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE5OjQyOjA1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToyMDo1MSJdXQ==
+OS0yMSAxNjowNjoxNCJdXQ==
 :: sfx/
 :: sfx/1.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
@@ -476,9 +485,9 @@ IAk7GQuJNRkFOQ8-CQf5Ej8EGQaJNhkGOQYJBvkSOBkIiTgZCDkyABERMgDzAkAJfxt5fxz5GHZ5
 dvkYeHl4igCgQAkfOgwaDCppGgYA0vkXjwVpgvkXiGmI_RYgAC-5sAgANh--AQD-1lD-----3Q==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToyMDo1MSJdXQ==
+OS0yMSAxNjowNjoxNCJdXQ==
 :: button_actions.lua
---[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-20 18:23:20",revision=41]]
+--[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-20 22:53:57",revision=48]]
 function handle_input(game)
 	if (btn(2)) up_action(game)
 	if (btn(3)) down_action(game)
@@ -502,7 +511,7 @@ function spacebar_action(game)
 	game.timer:stop_timer()
 end
 :: config.lua
---[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-19 19:31:19",revision=59]]
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-21 06:48:36",revision=64]]
 colors = {
 	WHITE = 7,
 	RED = 8,
@@ -518,8 +527,14 @@ phases = {
 }
 		
 instructions_text = {
-		"kill him...",
-		"but don't\ntouch him"
+		"Try to catch him with your circle trap...",
+		"but don't touch him....",
+		"HE IS...",
+		"THE PINK-FACED MAN",
+		"Up Arrow: Increase trap radius",
+		"Down Arrow: Decrease trap radius",
+		"Space Bar: Set trap",
+		"You have one shot...GO!"
 	}
 
 -- Set up window dimensions and window center point coordinates
@@ -539,65 +554,69 @@ center = {
 	x = window_table.win_dim/2 - 1, -- x-value (px) of screen center
 	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
 }
-
-function play_music()
-	fetch("sfx/1.sfx"):poke(0x80000)
-	music(1, nil, nil, 0x80000)
-end
-
-function stop_music()
-	music(-1, nil, nil, 0x80000)
-end
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-20 21:18:06",revision=219]]
-function draw_objects(game)
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-21 07:00:20",revision=289]]
+local FACE_SHEETS = {
+	{ expr="smirking", lids="open", gaze="up", side="right", sheet = 4 },
+	{ expr="smirking", lids="open", gaze="up", side="left", sheet = 6 },
+	{ expr="smirking", lids="open",	gaze="down", side="right", sheet = 0 },	
+	{ expr="smirking", lids="open", gaze="down", side="left", sheet = 2 },
+	{ expr="smirking", lids="closed", sheet = 8 },
+	
+	{ expr="fine", lids="open", gaze="up", side="right", sheet = 5 },
+	{ expr="fine", lids="open", gaze="up", side="left", sheet = 7 },
+	{ expr="fine", lids="open", gaze="down", side="right", sheet = 1 },
+	{ expr="fine", lids="open", gaze="down", side="left", sheet = 3 },
+	{ expr="fine", lids="closed", sheet = 9 },
+
+	{ expr="angry", lids="open", sheet = 10 },
+	{ expr="angry", lids="closed", sheet = 11 }
+}
+
+function resolve_sheet(s)
+	for row in all(FACE_SHEETS) do
+		if (row.expr == s.expr or not row.expr)
+		and (row.lids == s.lids or not row.lids)
+		and (row.gaze == s.gaze or not row.gaze)
+		and (row.side == s.side or not row.side) then
+		return row.sheet
+		end
+	end
+end
+
+function draw_objects(sheet, game)
 	local zone, target = game.capture_zone, game.target
 	
 	local center, radius = zone:get_center(), zone:get_radius()
 	circ(center.x, center.y, radius, zone:get_color())
 	
 	local corner, dimension = target:get_corner(), target:get_dimension()
-	sspr(1, 0, 0, 16, 16, corner.x, corner.y, dimension, dimension)
+	sspr(sheet, 0, 0, 16, 16, corner.x, corner.y, dimension, dimension)
 end
+
+local MUSIC_BUTTON_SPRITES = {
+	on = { sheet = 48},
+	off = { sheet = 49},
+	hover_on = { sheet = 50},
+	hover_off = { sheet = 51}
+}
 
 function draw_music_button(game)
-	sspr(48, 0, 0, 16, 16, 2, 2, 12, 12)
-end
-
-function draw_music_button_off(game)
-	sspr(49, 0, 0, 16, 16, 2, 2, 12, 12)
-end
-
-function draw_music_button_hover_on(game)
-	sspr(50, 0, 0, 16, 16, 2, 2, 12, 12)
-end
-
-function draw_music_button_hover_off(game)
-	sspr(51, 0, 0, 16, 16, 2, 2, 12, 12)
+	local hover = is_mouse_on_music_button(game)
+	local sprite_key
+	if game.music_controller.is_music_playing() then
+		sprite_key = hover and "hover_on" or "on"
+	else
+		sprite_key = hover and "hover_off" or "off"
+	end
+	local sprite = MUSIC_BUTTON_SPRITES[sprite_key]
+	sspr(sprite.sheet, 0, 0, 18, 18, 2, 2, 12, 12)
 end
 
 function color_overlap(pixels)
 	for pixel in all(pixels) do
 		pset(pixel.x, pixel.y, colors.RED)
 	end
-end
-
-function wrap_text(text, max_w)
-	local out, line_ = {}, ""
-	for word in all(split(text, " ")) do
-		line_temp = line_..word.." "
-		local w, _ = measure_w_h(line_temp)
-		if w > max_w and line ~= "" then
-			add(out, line_)
-			line_ = word.." "
-		else
-			line_ = line_temp
-		end
-	end
-	if line_ ~= "" then
-		add(out, line_)
-	end
-	return out
 end
 
 function draw_text_box(text)
@@ -625,13 +644,174 @@ function draw_text_box(text)
 		print(lines[i], (128 - widths[i])/2, tb_y0 + line_h*(i-1) + 6, 1)
 	end
 end
+:: face_manager.lua
+--[[pod_format="raw",created="2025-09-21 06:34:58",modified="2025-09-21 07:01:23",revision=12]]
+function new_face_manager()
+	local face_manager = {
+		face = { expr = "fine", lids = "open", gaze = "down", side = "right" },
+		phase = "gameplay",
+		next_shuffle_at = time() + 0.2,
+		shuffle_interval_min = 0.4,
+		shuffle_interval_max = 0.9,
+		
+		next_blink_at = time() + rr(1.2, 2.4),
+		blink_until = 0,
+		blink_dur = 0.12,  -- ~7 frames at 60fps
+	}
+	
+	function face_manager:resolve_face_sheet()
+		return resolve_sheet(face_manager.face)
+	end
+	
+	function face_manager:set_phase(p)
+		face_manager.phase = p
+		if p == "angry_only" then
+			face_manager.face.expr = "angry"
+		end
+	end
+
+	function face_manager:set_expression(expr)
+		face_manager.face.expr = expr
+	end
+	
+	function face_manager:set_eyelids(lids)
+		face_manager.face.lids = lids
+	end
+
+	function face_manager:set_gaze(dir)
+		face_manager.face.gaze = dir
+	end
+
+	function face_manager:set_side(s)
+		face_manager.face.side = s
+	end
+	
+	function face_manager:blink(now)
+		-- start a blink?
+		if now >= face_manager.next_blink_at and now >= face_manager.blink_until then
+			face_manager.face.lids = "closed"
+			face_manager.blink_until = now + face_manager.blink_dur
+			face_manager.next_blink_at = now + rr(1.3, 2.8)
+		end
+		-- end current blink?
+		if face_manager.face.lids == "closed" and now >= face_manager.blink_until then
+			face_manager.face.lids = "open"
+		end
+	end
+	
+	function face_manager:shuffle(now)
+		if now < face_manager.next_shuffle_at then return end
+		
+		face_manager.next_shuffle_at = now + 
+						rr(face_manager.shuffle_interval_min, face_manager.shuffle_interval_max)
+		
+		if face_manager.phase == "gameplay" then
+			face_manager.face.expr = choice({"fine", "smirking"})
+			face_manager.face.gaze = choice({"down", "up"})
+			face_manager.face.side = choice({"right", "left"})
+		elseif face_manager.phase == "angry_only" then
+			face_manager.face.expr = "angry"
+		end
+	end
+	
+	function face_manager:update()
+		local now = time()
+		face_manager:blink(now)
+		face_manager:shuffle(now)
+	end
+
+	return face_manager
+end
+
+:: face_sprite.lua
+--[[pod_format="raw",created="2025-09-21 06:46:34",modified="2025-09-21 06:51:38",revision=2]]
+include "helpers.lua"
+
+function new_face_manager()
+	local face_manager = {
+		face = { expr = "fine", lids = "open", gaze = "down", side = "right" },
+		phase = "gameplay",
+		next_shuffle_at = time() + 0.2,
+		shuffle_interval_min = 0.4,
+		shuffle_interval_max = 0.9,
+		
+		next_blink_at = time() + rr(1.2, 2.4),
+		blink_until = 0,
+		blink_dur = 0.12,  -- ~7 frames at 60fps
+	}
+	
+	function face_manager:resolve_face_sheet()
+		return resolve_sheet(face_manager.face)
+	end
+	
+	function face_manager:set_phase(p)
+		face_manager.phase = p
+		if p == "angry_only" then
+			face_manager.face.expr = "angry"
+		end
+	end
+
+	function face_manager:set_expression(expr)
+		face_manager.face.expr = expr
+	end
+	
+	function face_manager:set_eyelids(lids)
+		face_manager.face.lids = lids
+	end
+
+	function face_manager:set_gaze(dir)
+		face_manager.face.gaze = dir
+	end
+
+	function face_manager:set_side(s)
+		face_manager.face.side = s
+	end
+	
+	function face_manager:blink(now)
+		-- start a blink?
+		if now >= face_manager.next_blink_at and now >= face_manager.blink_until then
+			face_manager.face.lids = "closed"
+			face_manager.blink_until = now + face_manager.blink_dur
+			face_manager.next_blink_at = now + rr(1.3, 2.8)
+		end
+		-- end current blink?
+		if face_manager.face.lids == "closed" and now >= face_manager.blink_until then
+			face_manager.face.lids = "open"
+		end
+	end
+	
+	function face_manager:shuffle(now)
+		if now < face_manager.next_shuffle_at then return end
+		
+		face_manager.next_shuffle_at = now + 
+						rr(face_manager.shuffle_interval_min, face_manager.shuffle_interval_max)
+		
+		if face_manager.phase == "gameplay" then
+			face_manager.face.expr = choice({"fine", "smirking"})
+			face_manager.face.gaze = choice({"down", "up"})
+			face_manager.face.side = choice({"right", "left"})
+		elseif face_manager.phase == "angry_only" then
+			face_manager.face.expr = "angry"
+		end
+	end
+	
+	function face_manager:update()
+		local now = time()
+		face_manager:blink(now)
+		face_manager:shuffle(now)
+	end
+
+	return face_manager
+end
+
 :: game_state.lua
---[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-20 20:38:09",revision=108]]
+--[[pod_format="raw",created="2025-09-18 16:33:10",modified="2025-09-21 16:03:12",revision=117]]
 include "components/target.lua"
 include "components/capture_zone.lua"
 include "components/round_timer.lua"
 include "components/overlap_report.lua"
 include "phase_manager.lua"
+include "face_manager.lua"
 
 function new_game_state()
 	local Game = {
@@ -651,7 +831,8 @@ function new_game_state()
 		mouse_info = {
 			x = 0, y = 0, left_click = false, left_click_pressed = false},
 		show_mouse_overlay = false, 
-		music_on = true
+		face_manager = new_face_manager(),
+		restarted_from_scoreboard = false
 	}
 	
 	function Game:reset_round()
@@ -659,8 +840,6 @@ function new_game_state()
 		Game.capture_zone:reset_zone()
 		Game.timer:reset_timer()
 		Game.overlap:reset_overlap()
-
-		Game.ending_msg_index = 1
 	end
 		
 	function Game:set_phase(id)
@@ -720,13 +899,34 @@ function distance_to_box(x, y, box)
 	return sqrt((closest_x - x)*(closest_x - x) + (closest_y - y)*(closest_y - y))
 end
 :: helpers.lua
---[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-20 19:12:14",revision=84]]
+--[[pod_format="raw",created="2025-09-02 20:47:34",modified="2025-09-21 07:03:32",revision=94]]
 function measure_w_h(s)
 	clip(0, 0, 0, 0)
 	local w, h = print(s, 0, 0)
 	clip()
 	return w, h
 end
+
+function wrap_text(text, max_w)
+	local out, line_ = {}, ""
+	for word in all(split(text, " ")) do
+		line_temp = line_..word.." "
+		local w, _ = measure_w_h(line_temp)
+		if w > max_w and line ~= "" then
+			add(out, line_)
+			line_ = word.." "
+		else
+			line_ = line_temp
+		end
+	end
+	if line_ ~= "" then
+		add(out, line_)
+	end
+	return out
+end
+
+function choice(t) return t[flr(rnd(#t)) + 1] end
+function rr(a,b) return a + rnd(b-a) end  -- random range [a,b)
 
 function get_mouse_info(game)
 	local mx, my, mb, _, _ = mouse()
@@ -740,13 +940,6 @@ function get_mouse_info(game)
 	}
 end
 
-function handle_music_toggle(game)
-	if is_mouse_on_music_button(game)
-		and game.mouse_info.left_click_pressed then
-			game.music_controller:toggle_music()
-	end
-end
-
 function is_mouse_on_button(mx, my, button_tl_corner, bw, bh)
 	local x, y = button_tl_corner.x, button_tl_corner.y
    return mx >= x and mx <= x + bw 
@@ -756,6 +949,13 @@ end
 function is_mouse_on_music_button(game)
 	return is_mouse_on_button(game.mouse_info.x, game.mouse_info.y,
 		{x = 2, y = 2}, 12, 12)
+end
+
+function handle_music_toggle(game)
+	if is_mouse_on_music_button(game)
+		and game.mouse_info.left_click_pressed then
+			game.music_controller:toggle_music()
+	end
 end
 :: main.lua
 --[[pod_format="raw",created="2025-09-02 01:39:45",modified="2025-09-20 21:01:16",revision=684]]
@@ -789,7 +989,7 @@ end
 
 
 :: phase_manager.lua
---[[pod_format="raw",created="2025-09-20 19:47:38",modified="2025-09-20 20:52:45",revision=9]]
+--[[pod_format="raw",created="2025-09-20 19:47:38",modified="2025-09-21 06:23:55",revision=10]]
 include "phases/instructions.lua"
 include "phases/gameplay.lua"
 include "phases/ending.lua"
@@ -802,6 +1002,10 @@ function new_phase_manager(registry)
 		current_phase_id = nil,
 		current_phase = nil
 	}
+	
+	function manager:get_phase()
+		return manager.current_phase
+	end
 	
 	function manager:transition_phases(id, game)
 		local phase = registry[id]
@@ -829,12 +1033,12 @@ function new_phase_manager(registry)
 end
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMCAyMToyMDo1MSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3aW5nLmx1YSMyNyIsd29ya3Nw
-YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0icGhhc2VzL2luc3RydWN0aW9ucy5sdWEiLHdvcmtzcGFj
-ZV9pbmRleD0xfSx7bG9jYXRpb249InBoYXNlcy9nYW1lcGxheS5sdWEiLHdvcmtzcGFjZV9pbmRl
-eD0xfSx7bG9jYXRpb249InBoYXNlcy9lbmRpbmcubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xv
-Y2F0aW9uPSJwaGFzZXMvc2NvcmVib2FyZC5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
+OS0yMSAxNjowNjoxNCIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZXMvaW5zdHJ1Y3Rpb25zLmx1
+YSMxMSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0icGhhc2VfbWFuYWdlci5sdWEiLHdv
+cmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdhbWVfc3RhdGUubHVhIzI2Iix3b3Jrc3BhY2Vf
+aW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZXMvc2NvcmVib2FyZC5sdWEjMjUiLHdvcmtzcGFjZV9p
+bmRleD0xfSx7bG9jYXRpb249ImNvbmZpZy5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
 b249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3
 b3Jrc3BhY2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFjZV9pbmRleD00
 fX1dXQ==
