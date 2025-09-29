@@ -271,7 +271,7 @@ function new_target(center)
 end
 :: components/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE1OjUxOjM0Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxODoxMTo0MCJdXQ==
+OS0yOSAxOTowMzo0OSJdXQ==
 :: gfx/
 :: gfx/0.gfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -297,7 +297,7 @@ FRA19kclEEX2RTUgRfZCRUD1SmD1SDCaARMfM9MBJg85AP------------------------------
 ------8UUG09OH19
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxODoxMTo0MCJdXQ==
+OS0yOSAxOTowMzo0OSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -306,7 +306,7 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxODoxMTo0MCJdXQ==
+OS0yOSAxOTowMzo0OSJdXQ==
 :: phases/
 :: phases/ending.lua
 --[[pod_format="raw",created="2025-09-20 19:41:08",modified="2025-09-21 06:31:37",revision=5]]
@@ -474,7 +474,7 @@ end
 
 :: phases/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE5OjQyOjA1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxODoxMTo0MCJdXQ==
+OS0yOSAxOTowMzo0OSJdXQ==
 :: sfx/
 :: sfx/1.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
@@ -494,7 +494,7 @@ IAk7GQuJNRkFOQ8-CQf5Ej8EGQaJNhkGOQYJBvkSOBkIiTgZCDkyABERMgDzAkAJfxt5fxz5GHZ5
 dvkYeHl4igCgQAkfOgwaDCppGgYA0vkXjwVpgvkXiGmI_RYgAC-5sAgANh--AQD-1lD-----3Q==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxODoxMTo0MCJdXQ==
+OS0yOSAxOTowMzo0OSJdXQ==
 :: button_actions.lua
 --[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-20 22:53:57",revision=48]]
 function handle_input(game)
@@ -565,7 +565,7 @@ center = {
 	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
 }
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-29 17:56:04",revision=329]]
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-29 18:50:23",revision=333]]
 local FACE_SHEETS = {
 	{ expr="smirking", lids="open", gaze="up", side="right", sheet = 4 },
 	{ expr="smirking", lids="open", gaze="up", side="left", sheet = 6 },
@@ -664,8 +664,10 @@ function sprite_px_colored(n, u, v, tile_size, sheet_px_w)
 end
 	
 function bb_px_to_sprite_uv(x, y, bb, tile_size, dim)
-	local u = (x - bb.x0) * (tile_size / dim)
-	local v = (y - bb.y0) * (tile_size / dim)
+	local denom = max(1, dim - 1)
+	local scale = (tile_size - 1) / denom
+	local u = (x - bb.x0) * scale
+	local v = (y - bb.y0) * scale
 	return flr(u), flr(v)
 end
 			
@@ -1059,11 +1061,11 @@ function new_phase_manager(registry)
 end
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxODoxMTo0MCIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3aW5nLmx1YSM5NCIsd29ya3Nw
-YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iY29tcG9uZW50cy90YXJnZXQubHVhIzY4Iix3b3Jrc3Bh
-Y2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZW9tZXRyeS5sdWEjMjQiLHdvcmtzcGFjZV9pbmRleD0x
-fSx7bG9jYXRpb249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFw
-LzAubWFwIix3b3Jrc3BhY2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFj
-ZV9pbmRleD00fX1dXQ==
+OS0yOSAxOTowMzo0OSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3aW5nLmx1YSMxMDAiLHdvcmtz
+cGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImNvbXBvbmVudHMvdGFyZ2V0Lmx1YSM2OCIsd29ya3Nw
+YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2VvbWV0cnkubHVhIzI0Iix3b3Jrc3BhY2VfaW5kZXg9
+MX0se2xvY2F0aW9uPSJnZngvMC5nZngiLHdvcmtzcGFjZV9pbmRleD0yfSx7bG9jYXRpb249Im1h
+cC8wLm1hcCIsd29ya3NwYWNlX2luZGV4PTN9LHtsb2NhdGlvbj0ic2Z4LzEuc2Z4Iix3b3Jrc3Bh
+Y2VfaW5kZXg9NH19XV0=
 :: [eoc]
