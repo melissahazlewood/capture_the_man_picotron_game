@@ -180,7 +180,7 @@ function new_timer()
 	return timer
 end
 :: components/target.lua
---[[pod_format="raw",created="2025-09-20 17:59:42",modified="2025-09-20 18:17:56",revision=3]]
+--[[pod_format="raw",created="2025-09-20 17:59:42",modified="2025-09-26 19:40:30",revision=29]]
 function new_target(center)
 	local target = {
 		dim = 8, --width and height of target sprite
@@ -226,21 +226,29 @@ function new_target(center)
 		return get_bb_from_tl_corner(target:get_corner(), target.dim)
 	end
 	
-	function target:compute_overlap(capture_zone)
+	function target:compute_overlap(game)
 		local touched, sum, n = {}, 0, 0
 		local target_box = target:get_bounds()
-		local zone_center, zone_radius = capture_zone:get_center(), capture_zone:get_radius()
+		local zone_center, zone_radius = 
+				game.capture_zone:get_center(), game.capture_zone:get_radius()
 		local zone_box = get_bounding_box(zone_center, zone_radius)
+		local tile_size = 16
+		local sprite_idx = game.face_manager:resolve_face_sheet()
 		
 		for y = zone_box.y0, zone_box.y1 do
 			local dy = y - zone_center.y
 			for x = zone_box.x0, zone_box.x1 do
 				local dx = x - zone_center.x
+				
 				if is_hypotenuse_within_px_of_radius(dx, dy, zone_radius, 1) then
-					if is_point_within_box(x, y, target_box) then
-						add(touched, { x = x, y = y})
-					end 
-					if is_point_outside_box(x, y, target_box) then
+					local u, v = bb_px_to_sprite_uv(x, y, target_box, tile_size, target:get_dimension())
+				
+					if sprite_px_colored(sprite_idx, u, v, tile_size, 128) then
+--					if is_point_within_box(x, y, target_box) then
+						add(touched, { x = x, y = y })
+--					end 
+--					if is_point_outside_box(x, y, target_box) then
+					else
 						sum += distance_to_box(x, y, target_box)
 						n += 1
 					end
@@ -259,10 +267,9 @@ function new_target(center)
 	return target
 
 end
-
 :: components/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE1OjUxOjM0Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMSAxNjowNjoxNCJdXQ==
+OS0yNiAxOTo0NDoxMSJdXQ==
 :: gfx/
 :: gfx/0.gfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -288,7 +295,7 @@ FRA19kclEEX2RTUgRfZCRUD1SmD1SDCaARMfM9MBJg85AP------------------------------
 ------8UUG09OH19
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMSAxNjowNjoxNCJdXQ==
+OS0yNiAxOTo0NDoxMSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -297,7 +304,7 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMSAxNjowNjoxNCJdXQ==
+OS0yNiAxOTo0NDoxMSJdXQ==
 :: phases/
 :: phases/ending.lua
 --[[pod_format="raw",created="2025-09-20 19:41:08",modified="2025-09-21 06:31:37",revision=5]]
@@ -359,7 +366,7 @@ function new_exit_game_phase()
 	return phase
 end
 :: phases/gameplay.lua
---[[pod_format="raw",created="2025-09-20 19:40:55",modified="2025-09-21 07:01:31",revision=13]]
+--[[pod_format="raw",created="2025-09-20 19:40:55",modified="2025-09-24 17:31:33",revision=14]]
 function new_gameplay_phase()
 	local phase = {}
 	
@@ -376,7 +383,7 @@ function new_gameplay_phase()
 			game.target:grow(0.1)
 		else
 			if not game.overlap:is_resolved() then
-				local overlap_computation_results = game.target:compute_overlap(game.capture_zone)
+				local overlap_computation_results = game.target:compute_overlap(game)
 				game.overlap:apply(overlap_computation_results)
 				game.capture_zone:set_color(colors.GREEN)
 			end
@@ -465,7 +472,7 @@ end
 
 :: phases/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE5OjQyOjA1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMSAxNjowNjoxNCJdXQ==
+OS0yNiAxOTo0NDoxMSJdXQ==
 :: sfx/
 :: sfx/1.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
@@ -485,7 +492,7 @@ IAk7GQuJNRkFOQ8-CQf5Ej8EGQaJNhkGOQYJBvkSOBkIiTgZCDkyABERMgDzAkAJfxt5fxz5GHZ5
 dvkYeHl4igCgQAkfOgwaDCppGgYA0vkXjwVpgvkXiGmI_RYgAC-5sAgANh--AQD-1lD-----3Q==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMSAxNjowNjoxNCJdXQ==
+OS0yNiAxOTo0NDoxMSJdXQ==
 :: button_actions.lua
 --[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-20 22:53:57",revision=48]]
 function handle_input(game)
@@ -511,11 +518,12 @@ function spacebar_action(game)
 	game.timer:stop_timer()
 end
 :: config.lua
---[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-21 06:48:36",revision=64]]
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-24 15:27:01",revision=65]]
 colors = {
 	WHITE = 7,
 	RED = 8,
-	GREEN = 11
+	GREEN = 11,
+	BLACK = 0
 }
 
 phases = {
@@ -555,7 +563,7 @@ center = {
 	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
 }
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-21 07:00:20",revision=289]]
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-24 19:27:58",revision=318]]
 local FACE_SHEETS = {
 	{ expr="smirking", lids="open", gaze="up", side="right", sheet = 4 },
 	{ expr="smirking", lids="open", gaze="up", side="left", sheet = 6 },
@@ -643,6 +651,39 @@ function draw_text_box(text)
 	for i = 1, #lines do
 		print(lines[i], (128 - widths[i])/2, tb_y0 + line_h*(i-1) + 6, 1)
 	end
+end
+
+local function sprite_index_to_src_xy(n, tile_size, sheet_px_w)
+	tile_size = tile_size or 16
+	sheet_px_w = sheet_px_w or 128
+	local tiles_per_row = sheet_px_w / tile_size
+	local tx = n % tiles_per_row
+	local ty = n // tiles_per_row
+	tx = tx * tile_size
+	ty = ty * tile_size
+	return tx, ty
+end
+
+-- Is the (u, v) pixel of sprite index n non-empty on the spritesheet?
+-- u,v are 0..tile_size-1 in the sprite's local coords.
+function sprite_px_colored(n, u, v, tile_size, sheet_px_w)
+	local x, y = sprite_index_to_src_xy(n, tile_size, sheet_px_w)
+	local sx = x + u
+	local sy = y + v
+--	local s_color = sget(sx, sy)
+--	
+--	return s_color ~= 0
+	local sprite = get_spr(n)
+	local pixel = sprite:get(u, v)
+	return pixel ~= 0
+end
+	
+function bb_px_to_sprite_uv(x, y, bb, tile_size, dim)
+	local u = (x - bb.x0) * (tile_size / dim)
+	local v = (y - bb.y0) * (tile_size / dim)
+	u = mid(0, tile_size - 1, flr(u))
+	v = mid(0, tile_size - 1, flr(v))
+	return u, v
 end
 :: face_manager.lua
 --[[pod_format="raw",created="2025-09-21 06:34:58",modified="2025-09-21 07:01:23",revision=12]]
@@ -858,7 +899,7 @@ function new_game_state()
 	return Game
 end
 :: geometry.lua
---[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-20 16:26:28",revision=32]]
+--[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-24 19:44:33",revision=40]]
 function get_bb_from_tl_corner(top_left_corner, dim)
 	return {
 		x0 = top_left_corner.x,
@@ -1033,13 +1074,17 @@ function new_phase_manager(registry)
 end
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yMSAxNjowNjoxNCIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+OS0yNiAxOTo0NDoxNiIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
 IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZXMvaW5zdHJ1Y3Rpb25zLmx1
 YSMxMSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0icGhhc2VfbWFuYWdlci5sdWEiLHdv
 cmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdhbWVfc3RhdGUubHVhIzI2Iix3b3Jrc3BhY2Vf
 aW5kZXg9MX0se2xvY2F0aW9uPSJwaGFzZXMvc2NvcmVib2FyZC5sdWEjMjUiLHdvcmtzcGFjZV9p
-bmRleD0xfSx7bG9jYXRpb249ImNvbmZpZy5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRp
-b249ImdmeC8wLmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3
-b3Jrc3BhY2VfaW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFjZV9pbmRleD00
-fX1dXQ==
+bmRleD0xfSx7bG9jYXRpb249ImNvbmZpZy5sdWEjNSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2Nh
+dGlvbj0iZmFjZV9zcHJpdGUubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3
+aW5nLmx1YSMxMTEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImNvbXBvbmVudHMvdGFy
+Z2V0Lmx1YSM2MSIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0icGhhc2VzL2dhbWVwbGF5
+Lmx1YSMxNyIsd29ya3NwYWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2VvbWV0cnkubHVhIzMxIix3
+b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZngvMC5nZngiLHdvcmtzcGFjZV9pbmRleD0y
+fSx7bG9jYXRpb249Im1hcC8wLm1hcCIsd29ya3NwYWNlX2luZGV4PTN9LHtsb2NhdGlvbj0ic2Z4
+LzEuc2Z4Iix3b3Jrc3BhY2VfaW5kZXg9NH19XV0=
 :: [eoc]
