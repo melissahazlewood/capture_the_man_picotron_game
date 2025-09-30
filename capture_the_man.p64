@@ -180,7 +180,7 @@ function new_timer()
 	return timer
 end
 :: components/target.lua
---[[pod_format="raw",created="2025-09-20 17:59:42",modified="2025-09-29 17:51:58",revision=43]]
+--[[pod_format="raw",created="2025-09-20 17:59:42",modified="2025-09-30 16:40:31",revision=59]]
 function new_target(center)
 	local target = {
 		dim = 8, --width and height of target sprite
@@ -234,8 +234,6 @@ function new_target(center)
 		local zone_box = get_bounding_box(zone_center, zone_radius)
 		local tile_size = 16
 		local sprite_idx = game.face_manager:resolve_face_sheet()
-		local target_dim = target:get_dimension()
-		local sprite_scale = tile_size / target_dim
 		
 		for y = zone_box.y0, zone_box.y1 do
 			local dy = y - zone_center.y
@@ -243,13 +241,12 @@ function new_target(center)
 				local dx = x - zone_center.x
 				-- only check screen pixels w/in circle --
 				if is_hypotenuse_within_px_of_radius(dx, dy, zone_radius, 1) then
-					local u, v = bb_px_to_sprite_uv(x, y, target_box, tile_size, target:get_dimension())
+					local u, v = bb_px_to_sprite_uv(x, y,
+						target_box, tile_size, target:get_dimension())
 					-- only consider screen pixels that translate to sprite pixels
 					-- that fall within the sprite tile
-					if mid(0, tile_size - 1, u) == u and
-						mid(0, tile_size - 1, v) == v and
-						sprite_px_colored(sprite_idx, u, v, tile_size, 128) then		
-							add(touched, { x = x, y = y })
+					if sprite_px_colored(sprite_idx, u, v) then
+						add(touched, { x = x, y = y })
 					else
 						sum += distance_to_box(x, y, target_box)
 						n += 1
@@ -271,7 +268,7 @@ function new_target(center)
 end
 :: components/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE1OjUxOjM0Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxOTowMzo0OSJdXQ==
+OS0zMCAxNjo0NDoyNSJdXQ==
 :: gfx/
 :: gfx/0.gfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -297,7 +294,7 @@ FRA19kclEEX2RTUgRfZCRUD1SmD1SDCaARMfM9MBJg85AP------------------------------
 ------8UUG09OH19
 :: gfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxOTowMzo0OSJdXQ==
+OS0zMCAxNjo0NDoyNSJdXQ==
 :: map/
 :: map/0.map
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTAxLTE3IDEwOjM1OjQ4Iixtb2RpZmllZD0iMjAyNS0w
@@ -306,7 +303,7 @@ aTE2IiwzMgMALyIwAQD--------------------78QgiKSxoaWRkZW49ZmFsc2UscGFuX3g9MAgA
 0nk9MCx0aWxlX2g9MTYKABB3CgCwem9vbT0wLjI1fX0=
 :: map/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxOTowMzo0OSJdXQ==
+OS0zMCAxNjo0NDoyNSJdXQ==
 :: phases/
 :: phases/ending.lua
 --[[pod_format="raw",created="2025-09-20 19:41:08",modified="2025-09-21 06:31:37",revision=5]]
@@ -474,7 +471,7 @@ end
 
 :: phases/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTIwIDE5OjQyOjA1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxOTowMzo0OSJdXQ==
+OS0zMCAxNjo0NDoyNSJdXQ==
 :: sfx/
 :: sfx/1.sfx
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA5LTE5IDE3OjU4OjAxIixtb2RpZmllZD0iMjAyNS0w
@@ -494,7 +491,7 @@ IAk7GQuJNRkFOQ8-CQf5Ej8EGQaJNhkGOQYJBvkSOBkIiTgZCDkyABERMgDzAkAJfxt5fxz5GHZ5
 dvkYeHl4igCgQAkfOgwaDCppGgYA0vkXjwVpgvkXiGmI_RYgAC-5sAgANh--AQD-1lD-----3Q==
 :: sfx/.info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxOTowMzo0OSJdXQ==
+OS0zMCAxNjo0NDoyNSJdXQ==
 :: button_actions.lua
 --[[pod_format="raw",created="2025-09-02 18:25:51",modified="2025-09-20 22:53:57",revision=48]]
 function handle_input(game)
@@ -520,7 +517,7 @@ function spacebar_action(game)
 	game.timer:stop_timer()
 end
 :: config.lua
---[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-24 15:27:01",revision=65]]
+--[[pod_format="raw",created="2025-09-02 18:41:29",modified="2025-09-30 16:37:43",revision=67]]
 colors = {
 	WHITE = 7,
 	RED = 8,
@@ -565,7 +562,7 @@ center = {
 	y = window_table.win_dim/2 - 1 -- y-value (px) of screen center
 }
 :: drawing.lua
---[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-29 18:50:23",revision=333]]
+--[[pod_format="raw",created="2025-09-02 19:26:13",modified="2025-09-30 16:31:51",revision=347]]
 local FACE_SHEETS = {
 	{ expr="smirking", lids="open", gaze="up", side="right", sheet = 4 },
 	{ expr="smirking", lids="open", gaze="up", side="left", sheet = 6 },
@@ -657,7 +654,7 @@ end
 
 -- Is the (u, v) pixel of sprite index n non-empty on the spritesheet?
 -- u, v are 0..tile_size-1 in the sprite's local coords.
-function sprite_px_colored(n, u, v, tile_size, sheet_px_w)
+function sprite_px_colored(n, u, v)
 	local sprite = get_spr(n)
 	local pixel = sprite:get(u, v)
 	return pixel ~= 0
@@ -665,9 +662,9 @@ end
 	
 function bb_px_to_sprite_uv(x, y, bb, tile_size, dim)
 	local denom = max(1, dim - 1)
-	local scale = (tile_size - 1) / denom
-	local u = (x - bb.x0) * scale
-	local v = (y - bb.y0) * scale
+	local scale = tile_size / denom
+	local u = (x - bb.x0 + 0.5) * scale
+	local v = (y - bb.y0 + 0.5) * scale
 	return flr(u), flr(v)
 end
 			
@@ -886,7 +883,7 @@ function new_game_state()
 	return Game
 end
 :: geometry.lua
---[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-29 17:46:30",revision=44]]
+--[[pod_format="raw",created="2025-09-02 19:13:59",modified="2025-09-30 16:43:04",revision=54]]
 function get_bb_from_tl_corner(top_left_corner, dim)
 	return {
 		x0 = top_left_corner.x,
@@ -917,7 +914,7 @@ end
 
 function is_hypotenuse_within_px_of_radius(dx, dy, radius, px)
 		dr = sqrt(dx*dx + dy*dy)
-		return dr >= radius - px and dr <= radius
+		return abs(dr - radius) <= px
 end
 
 function distance_to_box(x, y, box)
@@ -1061,11 +1058,13 @@ function new_phase_manager(registry)
 end
 :: .info.pod
 b64$LS1bW3BvZCxjcmVhdGVkPSIyMDI1LTA3LTE5IDEzOjMyOjM1Iixtb2RpZmllZD0iMjAyNS0w
-OS0yOSAxOTowMzo0OSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
-IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3aW5nLmx1YSMxMDAiLHdvcmtz
-cGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImNvbXBvbmVudHMvdGFyZ2V0Lmx1YSM2OCIsd29ya3Nw
-YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iZ2VvbWV0cnkubHVhIzI0Iix3b3Jrc3BhY2VfaW5kZXg9
-MX0se2xvY2F0aW9uPSJnZngvMC5nZngiLHdvcmtzcGFjZV9pbmRleD0yfSx7bG9jYXRpb249Im1h
-cC8wLm1hcCIsd29ya3NwYWNlX2luZGV4PTN9LHtsb2NhdGlvbj0ic2Z4LzEuc2Z4Iix3b3Jrc3Bh
-Y2VfaW5kZXg9NH19XV0=
+OS0zMCAxNjo0NDoyNSIscnVudGltZT0yMCx3b3Jrc3BhY2VzPXt7bG9jYXRpb249Im1haW4ubHVh
+IzI2Iix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0aW9uPSJkcmF3aW5nLmx1YSM5OSIsd29ya3Nw
+YWNlX2luZGV4PTF9LHtsb2NhdGlvbj0iY29tcG9uZW50cy90YXJnZXQubHVhIzQ0Iix3b3Jrc3Bh
+Y2VfaW5kZXg9MX0se2xvY2F0aW9uPSJnZW9tZXRyeS5sdWEjMzEiLHdvcmtzcGFjZV9pbmRleD0x
+fSx7bG9jYXRpb249InBoYXNlcy9lbmRpbmcubHVhIix3b3Jrc3BhY2VfaW5kZXg9MX0se2xvY2F0
+aW9uPSJjb21wb25lbnRzL2NhcHR1cmVfem9uZS5sdWEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9j
+YXRpb249ImNvbmZpZy5sdWEjNDEiLHdvcmtzcGFjZV9pbmRleD0xfSx7bG9jYXRpb249ImdmeC8w
+LmdmeCIsd29ya3NwYWNlX2luZGV4PTJ9LHtsb2NhdGlvbj0ibWFwLzAubWFwIix3b3Jrc3BhY2Vf
+aW5kZXg9M30se2xvY2F0aW9uPSJzZngvMS5zZngiLHdvcmtzcGFjZV9pbmRleD00fX1dXQ==
 :: [eoc]
